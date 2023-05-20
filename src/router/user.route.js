@@ -1,8 +1,10 @@
 const express = require("express");
 const userController = require("../controller/user.controller");
+const tryCatchHandler = require("../utils/tryCatchHandler");
+
 
 const router = express.Router();
 
-router.post("/signup", userController.userSignupController);
+router.post("/signup", tryCatchHandler(userController.userSignupController));
 
-module.exports= router
+module.exports = { userRouter: router };

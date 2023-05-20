@@ -2,8 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const globalErrorHandler = require("./src/utils/globalErrorHandler");
 const mongoose = require("mongoose");
-const router = require("./src/router/user.route");
-
+const userRouter = require("./src/router/user.route");
 require("dotenv").config();
 
 const port = process.env.PORT;
@@ -18,7 +17,7 @@ mongoose
   .catch((err) => console.log(err));
 
 // Routes
-app.use("api/v1/user", router);
+app.use("api/v1/user", userRouter);
 
 // Middleware
 app.use(express.json());
