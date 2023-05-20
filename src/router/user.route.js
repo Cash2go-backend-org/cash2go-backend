@@ -2,8 +2,7 @@ const express = require("express");
 const userController = require("../controller/user.controller");
 const tryCatchHandler = require("../utils/tryCatchHandler");
 
-
-const router = express.Router();
+const router = new express.Router();
 
 router.post("/signup", tryCatchHandler(userController.userSignupController));
 
