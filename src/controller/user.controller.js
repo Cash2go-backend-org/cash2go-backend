@@ -6,8 +6,37 @@ const { BadUserRequestError } = require("../error/error");
 require("dotenv").config();
 const User = require("../model/user.model");
 const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
+const mailerConfig = require("../config/mailer");
+
+// mailer
+const transporter = nodemailer.createTransport(mailerConfig);
+
 
 const userController = {
+  sendVerificationEmail: async (req, res) => {
+    const { email } = req.body;
+
+    // Generate OTP
+    const otp = Math.floor(Math.random()*9421)
+  ;
+
+    try {
+      // Send OTP email
+      await transporter.sendMail({
+        from: "hembee999@outlook.com",
+        to: email,
+        subject: "OTP Verification",
+        text: `Your OTP is: ${otp}`,
+      });
+
+      res.status(200).json({ message: "OTP sent to email for verification" });
+    } catch (error) {
+      console.error("Error sending verification email:", error);
+      res.status(500).json({ error: "Failed to send verification email" });
+    }
+  },
+
   userSignupController: async (req, res) => {
     const { error, value } = userSignupValidator.validate(req.body);
     if (error) throw error;

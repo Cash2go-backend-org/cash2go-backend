@@ -8,7 +8,8 @@ router.post("/signup", tryCatchHandler(userController.userSignupController));
 router.get("/", (req, res) => {
   res.send("<h1>Welcome to CASH2GO</h1>");
 });
+router.post("/send-otp", userController.sendVerificationEmail);
 router.get("/login", tryCatchHandler(userController.userLoginController));
-router.get("/search", tryCatchHandler(userController.searchUser))
+router.get("/search", tryCatchHandler(userController.searchUser));
 
 module.exports = { userRouter: router };
