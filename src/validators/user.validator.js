@@ -16,4 +16,9 @@ const userSignupValidator = Joi.object({
     .messages({ "any.only": "Passwords do not match" }),
 }).strict();
 
-module.exports = { userSignupValidator };
+const userLoginValidator = Joi.object({
+  email: Joi.string().required().email(),
+  password: Joi.string().required(),
+});
+
+module.exports = { userSignupValidator, userLoginValidator };
