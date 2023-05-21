@@ -32,9 +32,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// userSchema.path("confirmPassword").validate((value) => {
-//   return this.password === value;
-// }, "Passwords do not match");
 
 const User = mongoose.model("User", userSchema);
 

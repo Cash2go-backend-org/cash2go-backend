@@ -6,7 +6,7 @@ const router = new express.Router();
 
 router.post("/signup", tryCatchHandler(userController.userSignupController));
 router.get("/", (req, res) => {
-    res.send("Hello cash2go")
+    res.send("<h1>Welcome to CASH2GO</h1>")
 });
 
 module.exports = { userRouter: router };
