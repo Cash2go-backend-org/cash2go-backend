@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const { mongoose } = require("mongoose");
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
@@ -32,9 +32,9 @@ const userSchema = mongoose.Schema({
   },
 });
 
-userSchema.path("confirmPassword").validate((value) => {
-  return this.password === value;
-}, "Passwords do not match");
+// userSchema.path("confirmPassword").validate((value) => {
+//   return this.password === value;
+// }, "Passwords do not match");
 
 const User = mongoose.model("User", userSchema);
 

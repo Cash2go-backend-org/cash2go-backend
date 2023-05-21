@@ -1,10 +1,10 @@
-const { mongoose } = require("mongoose");
-const User = require("../model/user.model");
 const { userSignupValidator } = require("../validators/user.validator");
 const { BadUserRequestError } = require("../error/error");
+const User = require("../model/user.model");
 
-class userController {
-  static async userSignupController(req, res) {
+const userController = {
+  userSignupController: async (req, res) => {
+    
     const { error, value } = userSignupValidator.validate(req.body);
     if (error) throw error;
     const emailExists = await User.find({ email: req.body.email });

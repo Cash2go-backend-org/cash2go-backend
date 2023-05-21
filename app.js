@@ -5,23 +5,26 @@ const mongoose = require("mongoose");
 const { userRouter } = require("./src/router/user.route");
 require("dotenv").config();
 
-const port = process.env.PORT;
-const app = express();
-
 // Database connection
 const mongoURI = process.env.MONGODB_CONNECTION_URL;
 
 mongoose
   .connect(mongoURI)
   .then(console.log("Database connection is established"))
-  .catch((err) => console.log(err));
+  .catch((err) => console.log(err.message));
+const port = process.env.PORT;
+const app = express();
+
+// Middleware
+app.use(morgan("tiny"));
+app.use(express.json());
+
+
 
 // Routes
 app.use("/api/v1/user", userRouter);
 
-// Middleware
-app.use(express.json());
-app.use(morgan("tiny"));
+
 
 // error handler
 app.use(globalErrorHandler);
