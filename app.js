@@ -3,16 +3,18 @@ const morgan = require("morgan");
 const globalErrorHandler = require("./src/utils/globalErrorHandler");
 const mongoose = require("mongoose");
 const { userRouter } = require("./src/router/user.route");
+const config = require("./src/config/index");
 require("dotenv").config();
 
+
 // Database connection
-const mongoURI = process.env.MONGODB_CONNECTION_URL;
+const mongoURI = config.MONGODB_CONNECTION_URL;
 
 mongoose
   .connect(mongoURI)
   .then(console.log("Database connection is established"))
   .catch((err) => console.log(err.message));
-const port = process.env.PORT;
+const port = config.PORT;
 const app = express();
 
 // Middleware

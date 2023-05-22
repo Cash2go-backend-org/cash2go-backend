@@ -8,67 +8,72 @@ const User = require("../model/user.model");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const mailerConfig = require("../config/mailer");
+const { config } = require("../config/index");
+
 
 // mailer
 const transporter = nodemailer.createTransport(mailerConfig);
 
-
 const userController = {
   sendVerificationEmail: async (req, res) => {
-    const { email } = req.body;
+    const { email, companyID } = req.body;
 
     // Generate OTP
-    const otp = Math.floor(Math.random()*9421)
-  ;
-
-    try {
-      // Send OTP email
-      await transporter.sendMail({
-        from: "hembee999@outlook.com",
-        to: email,
-        subject: "OTP Verification",
-        text: `Your OTP is: ${otp}`,
-      });
-
-      res.status(200).json({ message: "OTP sent to email for verification" });
-    } catch (error) {
-      console.error("Error sending verification email:", error);
-      res.status(500).json({ error: "Failed to send verification email" });
-    }
+    const otp = Math.floor(Math.random() * 9461);
+    // Send OTP email
+    await transporter.sendMail({
+      from: "hembee999@outlook.com",
+      to: email,
+      subject: "CASH2GO OTP Verification",
+      html: `<p>Use OTP <b>${otp}</b> to verify your email</p>`
+    });
+    const user = await User.create({ email, companyID, "otp" : otp });
+   
+    res
+      .status(200)
+      .json({ message: "OTP sent to email for verification", data: { user } });
   },
 
   userSignupController: async (req, res) => {
     const { error, value } = userSignupValidator.validate(req.body);
     if (error) throw error;
-    const emailExists = await User.find({ email: req.body.email });
-    if (emailExists.length > 0)
-      throw new BadUserRequestError(
-        "An account with this email already exists"
-      );
-    const companyIDExists = await User.find({ companyID: req.body.companyID });
-    if (companyIDExists.length > 0)
-      throw new BadUserRequestError("An account with this company ID exists");
-    const usernameExists = await User.find({ username: req.body.username });
-    if (usernameExists.length > 0)
-      throw new BadUserRequestError(
-        "An account with this username already exists."
-      );
-    const saltRounds = Number(process.env.bycrypt_salt_round);
+    // const emailExists = await User.find({ email: req.body.email });
+    // if (emailExists.length > 0)
+    //   throw new BadUserRequestError(
+    //     "An account with this email already exists"
+    //   );
+    // const companyIDExists = await User.find({ companyID: req.body.companyID });
+    // if (companyIDExists.length > 0)
+    //   throw new BadUserRequestError("An account with this company ID exists");
+    // const usernameExists = await User.find({ username: req.body.username });
+    // if (usernameExists.length > 0)
+    //   throw new BadUserRequestError(
+    //     "An account with this username already exists."
+    //   );
+    const saltRounds = Number(config.bycrypt_salt_round);
     const hashedPassword = bcrypt.hashSync(req.body.password, saltRounds);
     const hashedConfirmPassword = bcrypt.hashSync(
       req.body.confirmPassword,
       saltRounds
     );
+    // const { email, otp, companyID, username, password, confirmPassword } = req.body;
 
-    const user = {
-      email: req.body.email,
-      companyID: req.body.companyID,
-      username: req.body.username,
-      password: hashedPassword,
-      confirmPassword: hashedConfirmPassword,
-    };
+    // Find the user by email and OTP
+    const user = await User.findOne({ email, otp, companyID });
 
-    const newUser = await User.create(user);
+    if (!user) {
+      res.status(400).json({ error: "Invalid OTP." });
+      return;
+    }
+
+    const newUser = await User.updateOne(
+      { email: email },
+      {
+        username: req.body.username,
+        password: hashedPassword,
+        confirmPassword: hashedConfirmPassword,
+      }
+    );
     res.status(201).json({
       message: "A new user has been created successfully",
       status: "Success",
@@ -97,7 +102,7 @@ const userController = {
   },
 
   searchUser: async (req, res) => {
-    const user = await User.findOne({ username: req.query?.username });
+    const user = await User.findOne({ email: req.query?.email });
     if (!user) throw new NotFoundError("User not found");
 
     res.status(200).json({
