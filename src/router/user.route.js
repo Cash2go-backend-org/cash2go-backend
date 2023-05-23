@@ -1,6 +1,7 @@
 const express = require("express");
 const userController = require("../controller/user.controller");
 const tryCatchHandler = require("../utils/tryCatchHandler");
+const userAuthMiddleWare = require("../middleware/auth.middleware");
 
 const router = new express.Router();
 
@@ -10,6 +11,10 @@ router.get("/", (req, res) => {
 });
 router.post("/send-otp", tryCatchHandler(userController.sendVerificationEmail));
 router.get("/login", tryCatchHandler(userController.userLoginController));
-router.get("/search", tryCatchHandler(userController.searchUser));
+router.get(
+  "/search",
+  userAuthMiddleWare,
+  tryCatchHandler(userController.searchUser)
+);
 
 module.exports = { userRouter: router };

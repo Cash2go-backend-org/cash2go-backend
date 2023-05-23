@@ -9,7 +9,8 @@ const User = require("../model/user.model");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const mailerConfig = require("../config/mailer");
-const config  = require("../config/index");
+const config = require("../config/index");
+const { generateToken } = require("../utils/jwt.utils");
 
 // mailer
 const transporter = nodemailer.createTransport(mailerConfig);
@@ -98,7 +99,8 @@ const userController = {
       message: "User login successful",
       status: "Success",
       data: {
-        user,
+        user: user,
+        access_token: generateToken(user),
       },
     });
   },
