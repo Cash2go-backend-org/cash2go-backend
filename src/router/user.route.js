@@ -24,10 +24,5 @@ router.post(
   "/reset-password",
   tryCatchHandler(passwordController.resetPasswordController)
 );
-// router.get("/reset-password", (req, res) => {
-//   // Handle the GET request for reset-password here
-//   // Return an appropriate response or redirect the user to a password reset page
-//   res.send("Reset password page");
-// });
 
 module.exports = { userRouter: router };

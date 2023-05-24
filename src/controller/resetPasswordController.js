@@ -16,21 +16,22 @@ const passwordController = {
       throw new BadUserRequestError("User not found");
     }
 
-    // Generate a reset token
-    const resetToken = Math.random().toString(36).substr(2, 10); // Generate a 10-character token
+    // Generate a reset token(10 characters)
+    const resetToken = Math.random().toString(36).substr(2, 10);
 
     // Set the reset token and its expiration time for the user
     user.resetToken = resetToken;
-    user.resetTokenExpiration = Date.now() + 3600000; // Token expires in 1 hour
+
+    // Token expires in 1 hour
+    user.resetTokenExpiration = Date.now() + 3600000;
     await user.save();
 
     // Send the reset link to the user's email
     const transporter = nodemailer.createTransport({
-      // Configure your email provider details here
-      // For example, using SMTP:
+      // Configure the email provider details here
     });
 
-    const resetLink = `http://localhost:3000/api/v1/user/reset-password/${resetToken}`; // Replace with your actual reset password page URL
+    const resetLink = `http://localhost:3000/api/v1/user/reset-password/${resetToken}`;
 
     const mailOptions = {
       to: email,
