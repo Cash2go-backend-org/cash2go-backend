@@ -3,7 +3,7 @@ const {
   userSignupValidator,
   userLoginValidator,
 } = require("../validators/user.validator");
-const { BadUserRequestError } = require("../error/error");
+const { BadUserRequestError, NotFoundError } = require("../error/error");
 require("dotenv").config();
 const User = require("../model/user.model");
 const bcrypt = require("bcrypt");
