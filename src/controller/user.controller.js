@@ -2,9 +2,12 @@ const { userSignupValidator } = require("../validators/user.validator");
 const { BadUserRequestError } = require("../error/error");
 const User = require("../model/user.model");
 
+//opeyemi
+// const nodemailer = require("nodemailer");
+// const cryptoRandomString = require("crypto-random-string");
+
 const userController = {
   userSignupController: async (req, res) => {
-    
     const { error, value } = userSignupValidator.validate(req.body);
     if (error) throw error;
     const emailExists = await User.find({ email: req.body.email });
@@ -36,7 +39,7 @@ const userController = {
         user: newUser,
       },
     });
-  }
-}
+  },
+};
 
 module.exports = userController;

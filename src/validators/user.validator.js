@@ -6,6 +6,8 @@ const userSignupValidator = Joi.object({
   }),
   companyID: Joi.string().required(),
   username: Joi.string().required(),
+  otp: Joi.string().length(4),
+  // otp: Joi.string().length(4).required(),
   password: Joi.string()
     .min(8)
     .required()
@@ -16,4 +18,9 @@ const userSignupValidator = Joi.object({
     .messages({ "any.only": "Passwords do not match" }),
 }).strict();
 
-module.exports = { userSignupValidator };
+const userLoginValidator = Joi.object({
+  email: Joi.string().required().email(),
+  password: Joi.string().required(),
+});
+
+module.exports = { userSignupValidator, userLoginValidator };
