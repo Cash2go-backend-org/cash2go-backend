@@ -45,6 +45,27 @@ const userController = {
       .json({ message: "OTP sent to email for verification", data: { user } });
   },
 
+  resendOTP: async (req, res) => {
+    const { email } = req.body;
+    // Generate new OTP
+    const newOtp = Math.floor(Math.random() * 8888 + 1000);
+    // Send OTP email
+    // await transporter.sendMail({
+    //   from: "hembee999@outlook.com",
+    //   to: email,
+    //   subject: "CASH2GO OTP Verification",
+    //   html: `<p>Use OTP <b>${newOtp}</b> to verify your email</p>`,
+    // });
+    const update = { $set: { otp: newOtp } };
+
+    const user = await User.updateOne({ email: email }, update);
+
+    res.status(200).json({
+      message: "OTP resent to email for verification",
+      data: { user, newOtp: newOtp },
+    });
+  },
+
   userSignupController: async (req, res) => {
     const { error } = userSignupValidator.validate(req.body);
     if (error) throw error;

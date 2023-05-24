@@ -9,6 +9,7 @@ router.patch("/signup", tryCatchHandler(userController.userSignupController));
 router.get("/", (req, res) => {
   res.send("<h1>Welcome to CASH2GO</h1>");
 });
+router.patch("/resend-otp", tryCatchHandler(userController.resendOTP));
 router.post("/send-otp", tryCatchHandler(userController.sendVerificationEmail));
 router.get("/login", tryCatchHandler(userController.userLoginController));
 router.get(
