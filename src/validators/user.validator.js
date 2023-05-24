@@ -1,13 +1,22 @@
 const Joi = require("joi");
 
-const userSignupValidator = Joi.object({
+const userEmailVerification = Joi.object({
   email: Joi.string().required().email().messages({
     "string.pattern.base": "Email is not a valid email format/address",
   }),
   companyID: Joi.string().required(),
+});
+
+const userSignupValidator = Joi.object({
+  email: Joi.string().required().email().messages({
+    "string.pattern.base": "Email is not a valid email format/address",
+  }),
+  companyID: Joi.number().required(),
   username: Joi.string().required(),
-  otp: Joi.string().length(4),
+  // otp: Joi.string().length(4),
   // otp: Joi.string().length(4).required(),
+  otp: Joi.number(),
+  // otp: Joi.number().required(),
   password: Joi.string()
     .min(8)
     .required()
@@ -23,4 +32,8 @@ const userLoginValidator = Joi.object({
   password: Joi.string().required(),
 });
 
-module.exports = { userSignupValidator, userLoginValidator };
+module.exports = {
+  userEmailVerification,
+  userSignupValidator,
+  userLoginValidator,
+};

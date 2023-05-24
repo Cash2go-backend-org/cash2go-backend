@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
       ],
     },
   },
+  otp: Number,
   companyID: {
     type: Number,
     required: true,
