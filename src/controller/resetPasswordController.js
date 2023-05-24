@@ -28,18 +28,11 @@ const passwordController = {
     const transporter = nodemailer.createTransport({
       // Configure your email provider details here
       // For example, using SMTP:
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: {
-        user: "opeyemireact@gmail.com",
-      },
     });
 
     const resetLink = `http://localhost:3000/api/v1/user/reset-password/${resetToken}`; // Replace with your actual reset password page URL
 
     const mailOptions = {
-      from: "opeyemireact@gmail.com",
       to: email,
       subject: "Password Reset",
       html: `
