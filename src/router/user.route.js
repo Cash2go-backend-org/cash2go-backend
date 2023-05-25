@@ -6,16 +6,18 @@ const userAuthMiddleWare = require("../middleware/auth.middleware");
 
 const router = new express.Router();
 
-router.post("/signup", tryCatchHandler(userController.userSignupController));
-router.get("/", (req, res) => {
-  res.send("<h1>Welcome to CASH2GO</h1>");
-});
+// router.post("/signup", tryCatchHandler(userController.userSignupController));
+// router.get("/", (req, res) => {
+//   res.send("<h1>Welcome to CASH2GO</h1>");
+// });
 router.patch("/resend-otp", tryCatchHandler(userController.resendOTP));
 router.post("/send-otp", tryCatchHandler(userController.sendVerificationEmail));
+router.patch("/resend-otp", tryCatchHandler(userController.resendOTP));
+router.post("/signup", tryCatchHandler(userController.userSignupController));
 router.get("/login", tryCatchHandler(userController.userLoginController));
 router.get(
   "/search",
-  userAuthMiddleWare,
+  // userAuthMiddleWare,
   tryCatchHandler(userController.searchUser)
 );
 
@@ -26,7 +28,11 @@ router.post(
 );
 router.post(
   "/update-password/:token",
+  // userAuthMiddleWare,
   tryCatchHandler(passwordController.updatePasswordController)
 );
 
+router.get("/", (req, res) => {
+  res.send("<h1>Welcome to CASH2GO</h1>");
+});
 module.exports = { userRouter: router };

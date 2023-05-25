@@ -210,12 +210,12 @@ const passwordController = {
         .json({ message: "Failed to reset password", error: error.message });
     }
   },
-
   updatePasswordController: async (req, res) => {
     const { token } = req.params;
     console.log("Token from URL:", token);
     // Find the user by the reset token and check the expiration time
     const user = await User.findOne({
+      email: req.body.email,
       resetToken: token,
       resetTokenExpiration: { $gt: Date.now() },
     });
@@ -262,14 +262,14 @@ const passwordController = {
   },
 };
 
-const generateResetToken = () => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let token = "";
-  for (let i = 0; i < 10; i++) {
-    token += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return token;
-};
+// const generateResetToken = () => {
+//   const characters =
+//     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+//   let token = "";
+//   for (let i = 0; i < 10; i++) {
+//     token += characters.charAt(Math.floor(Math.random() * characters.length));
+//   }
+//   return token;
+// };
 
 module.exports = passwordController;
