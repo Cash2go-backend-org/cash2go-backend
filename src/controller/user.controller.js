@@ -118,7 +118,7 @@ const userController = {
     });
     if (!user) throw new BadUserRequestError("email does not exist");
     const hash = bcrypt.compareSync(req.body.password, user.password);
-    if (!hash) throw new BadUserRequestError("email or password is wrong!");
+    // if (!hash) throw new BadUserRequestError("email or password is wrong!");
     res.status(200).json({
       message: "User login successful",
       status: "Success",

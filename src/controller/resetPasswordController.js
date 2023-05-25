@@ -13,7 +13,17 @@ const passwordController = {
       if (!user) {
         throw new BadUserRequestError("User not found");
       }
-
+      const generateResetToken = () => {
+        const characters =
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let token = "";
+        for (let i = 0; i < 10; i++) {
+          token += characters.charAt(
+            Math.floor(Math.random() * characters.length)
+          );
+        }
+        return token;
+      };
       // Generate a reset token
       const resetToken = generateResetToken();
 
@@ -25,6 +35,13 @@ const passwordController = {
       // Send the reset link to the user's email
       const transporter = nodemailer.createTransport({
         // Configure the email provider details here
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+          user: "opeyemireact@gmail.com",
+          pass: "fghvdenjsdprjjwg",
+        },
       });
 
       const resetLink = `http://localhost:3000/api/v1/user/reset-password/${resetToken}`;
@@ -57,65 +74,35 @@ const passwordController = {
     }
   },
   updatePasswordController: async (req, res) => {
-    const { token } = req.params;
-    console.log("Token from URL:", token);
-    // Find the user by the reset token and check the expiration time
-    const user = await User.findOne({
-      email: req.body.email,
-      resetToken: token,
-      resetTokenExpiration: { $gt: Date.now() },
-    });
-    console.log("User found:", user);
     try {
+      const token = req.headers.authorization;
+      const { password, confirmPassword } = req.body;
       // Find the user by the reset token
       const user = await User.findOne({ resetToken: token });
-
       if (!user) {
-        throw new BadUserRequestError("Invalid reset token");
+        throw new BadUserRequestError("Invalid or expired reset token");
       }
-
-      // Check if the token has expired
-      const isTokenExpired =
-        user.resetTokenExpiration && user.resetTokenExpiration < Date.now();
-
-      if (isTokenExpired) {
-        throw new BadUserRequestError("Expired reset token");
+      // Check if the reset token has expired
+      if (user.resetTokenExpiration < Date.now()) {
+        throw new BadUserRequestError("Reset token has expired");
       }
-
-      // Validate password and confirm password
-      if (password !== confirmPassword) {
-        throw new BadUserRequestError("Passwords do not match");
-      }
-
-      // Hash the new password
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      // Update the user's password and clear the reset token
-      user.password = hashedPassword;
+      // Update the user's password
+      user.password = password;
+      user.confirmPassword = confirmPassword;
       user.resetToken = undefined;
       user.resetTokenExpiration = undefined;
+
       await user.save();
 
       res.status(200).json({ message: "Password updated successfully" });
     } catch (error) {
       console.error("Error in updatePasswordController:", error);
-      res.status(error.status || 500).json({
+      res.status(500).json({
         message:
           error.message || "An error occurred while updating the password",
-        status: "Failed",
       });
     }
   },
 };
-
-// const generateResetToken = () => {
-//   const characters =
-//     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-//   let token = "";
-//   for (let i = 0; i < 10; i++) {
-//     token += characters.charAt(Math.floor(Math.random() * characters.length));
-//   }
-//   return token;
-// };
 
 module.exports = passwordController;
