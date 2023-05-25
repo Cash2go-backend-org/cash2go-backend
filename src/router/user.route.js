@@ -24,5 +24,9 @@ router.post(
   "/reset-password",
   tryCatchHandler(passwordController.resetPasswordController)
 );
+router.post(
+  "/update-password/:token",
+  tryCatchHandler(passwordController.updatePasswordController)
+);
 
 module.exports = { userRouter: router };
