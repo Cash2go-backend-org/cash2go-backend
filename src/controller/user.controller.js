@@ -8,6 +8,9 @@ require("dotenv").config();
 const User = require("../model/user.model");
 
 //opeyemi
+const { clearTokenCookie } = require("../utils/jwt.utils");
+
+//opeyemi
 // const nodemailer = require("nodemailer");
 // const cryptoRandomString = require("crypto-random-string");
 
@@ -44,6 +47,14 @@ const userController = {
         user: newUser,
       },
     });
+  },
+
+  //opeyemi
+  userLogoutController: async (req, res) => {
+    // Clear the token cookie
+    clearTokenCookie(res);
+
+    res.status(200).json({ message: "Logout successful" });
   },
 };
 
