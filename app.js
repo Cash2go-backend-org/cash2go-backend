@@ -3,12 +3,12 @@ const morgan = require("morgan");
 const globalErrorHandler = require("./src/utils/globalErrorHandler");
 const mongoose = require("mongoose");
 const { userRouter } = require("./src/router/user.route");
-const config = require("./src/config/index");
+// const config = require("./src/config/index");
 require("dotenv").config();
 
 
 // Database connection
-const mongoURI = config.MONGODB_CONNECTION_URL;
+const mongoURI = process.env.MONGODB_CONNECTION_URL;
 
 mongoose
   .connect(mongoURI)
