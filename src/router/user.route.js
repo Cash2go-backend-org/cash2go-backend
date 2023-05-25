@@ -13,7 +13,7 @@ router.patch("/resend-otp", tryCatchHandler(userController.resendOTP));
 router.post("/send-otp", tryCatchHandler(userController.sendVerificationEmail));
 router.patch("/resend-otp", tryCatchHandler(userController.resendOTP));
 router.post("/signup", tryCatchHandler(userController.userSignupController));
-router.get("/login", tryCatchHandler(userController.userLoginController));
+router.post("/login", tryCatchHandler(userController.userLoginController));
 router.get(
   "/search",
   // userAuthMiddleWare,
