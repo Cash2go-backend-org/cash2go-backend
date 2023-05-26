@@ -78,7 +78,8 @@ const userController = {
         "An account with this username already exists."
       );
 
-    const { email, otp, companyID, username, password, confirmPassword } =
+    const { email, companyID, username, password, confirmPassword } =
+      // const { email, otp, companyID, username, password, confirmPassword } =
       req.body;
 
     const saltRounds = config.bcrypt_salt_round;
@@ -118,7 +119,7 @@ const userController = {
     });
     if (!user) throw new BadUserRequestError("email does not exist");
     const hash = bcrypt.compareSync(req.body.password, user.password);
-    // if (!hash) throw new BadUserRequestError("email or password is wrong!");
+    if (!hash) throw new BadUserRequestError("email or password is wrong!");
     res.status(200).json({
       message: "User login successful",
       status: "Success",

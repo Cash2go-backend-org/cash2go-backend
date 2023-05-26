@@ -35,6 +35,13 @@ const passwordController = {
       // Send the reset link to the user's email
       const transporter = nodemailer.createTransport({
         // Configure the email provider details here
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+          user: "opeyemireact@gmail.com",
+          pass: "fghvdenjsdprjjwg",
+        },
       });
 
       const resetLink = `http://localhost:3000/api/v1/user/reset-password/${resetToken}`;
