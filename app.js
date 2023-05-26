@@ -6,7 +6,6 @@ const { userRouter } = require("./src/router/user.route");
 const config = require("./src/config/index");
 require("dotenv").config();
 
-
 // Database connection
 const mongoURI = config.MONGODB_CONNECTION_URL;
 
@@ -21,12 +20,8 @@ const app = express();
 app.use(morgan("tiny"));
 app.use(express.json());
 
-
-
 // Routes
 app.use("/api/v1/user", userRouter);
-
-
 
 // error handler
 app.use(globalErrorHandler);

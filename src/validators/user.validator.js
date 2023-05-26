@@ -13,7 +13,10 @@ const userSignupValidator = Joi.object({
   }),
   companyID: Joi.number().required(),
   username: Joi.string().required(),
-  otp: Joi.number().required(),
+  // otp: Joi.string().length(4),
+  // otp: Joi.string().length(4).required(),
+  otp: Joi.number(),
+  // otp: Joi.number().required(),
   password: Joi.string()
     .min(8)
     .required()

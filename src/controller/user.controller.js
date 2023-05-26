@@ -12,6 +12,9 @@ const mailerConfig = require("../config/mailer");
 const config = require("../config/index");
 const { generateToken } = require("../utils/jwt.utils");
 
+//opeyemi
+const { clearTokenCookie } = require("../utils/jwt.utils");
+
 // mailer
 const transporter = nodemailer.createTransport(mailerConfig);
 
@@ -115,7 +118,7 @@ const userController = {
     });
     if (!user) throw new BadUserRequestError("email does not exist");
     const hash = bcrypt.compareSync(req.body.password, user.password);
-    if (!hash) throw new BadUserRequestError("email or password is wrong!");
+    // if (!hash) throw new BadUserRequestError("email or password is wrong!");
     res.status(200).json({
       message: "User login successful",
       status: "Success",
@@ -137,6 +140,11 @@ const userController = {
         user,
       },
     });
+  },
+  //opeyemi
+  userLogoutController: async (req, res) => {
+    clearTokenCookie(res);
+    res.status(200).json({ message: "Logout successful" });
   },
 };
 

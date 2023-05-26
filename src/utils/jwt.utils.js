@@ -17,4 +17,10 @@ function verifyToken(token) {
   return jwt.verify(token, config.jwt_secret_key);
 }
 
-module.exports = { generateToken, verifyToken };
+//opeyemi
+//logout util
+function clearTokenCookie(res) {
+  res.clearCookie("token");
+}
+
+module.exports = { generateToken, verifyToken, clearTokenCookie };
