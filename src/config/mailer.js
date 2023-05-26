@@ -1,14 +1,10 @@
 const mailerConfig = {
-  service: "gmail",
+  host: "smtp.office365.com",
+  port: 587,
+  secure: false,
   auth: {
-    user: "hembee999@gmail.com",
-    pass: "hasagbar",
-    // host: "smtp.office365.com",
-    // port: 587,
-    // secure: false,
-    // auth: {
-    //   user: "hembee999@outlook.com",
-    //   pass: "@Hasagbar1",
+    user: "hembee999@outlook.com",
+    pass: "@Hasagbar1",
   },
 };
 

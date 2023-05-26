@@ -35,12 +35,12 @@ const userController = {
     // Generate OTP
     const otp = Math.floor(Math.random() * 8888 + 1000);
     // Send OTP email
-    await transporter.sendMail({
-      from: "hembee999@gmail.com",
-      to: email,
-      subject: "CASH2GO OTP Verification",
-      html: `<p>Use OTP <b>${otp}</b> to verify your email</p>`,
-    });
+    // await transporter.sendMail({
+    //   from: "hembee999@outlook.com",
+    //   to: email,
+    //   subject: "CASH2GO OTP Verification",
+    //   html: `<p>Use OTP <b>${otp}</b> to verify your email</p>`,
+    // });
     const user = await User.create({ email, companyID, otp });
 
     res
@@ -54,7 +54,7 @@ const userController = {
     const newOtp = Math.floor(Math.random() * 8888 + 1000);
     // Send OTP email
     // await transporter.sendMail({
-    //   from: "hembee999@gmail.com",
+    //   from: "hembee999@outlook.com",
     //   to: email,
     //   subject: "CASH2GO OTP Verification",
     //   html: `<p>Use OTP <b>${newOtp}</b> to verify your email</p>`,
