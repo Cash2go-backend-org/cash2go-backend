@@ -36,7 +36,7 @@ const userController = {
     const otp = Math.floor(Math.random() * 8888 + 1000);
     // Send OTP email
     await transporter.sendMail({
-      from: "hembee999@outlook.com",
+      from: "outlook_62E686B44B6B2FE8@outlook.com",
       to: email,
       subject: "CASH2GO OTP Verification",
       html: `<p>Use OTP <b>${otp}</b> to verify your email</p>`,
