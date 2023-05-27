@@ -1,6 +1,6 @@
-const { userSignupValidator } = require("../validators/user.validator");
 const { BadUserRequestError } = require("../error/error");
 const nodemailer = require("nodemailer");
+const mailerConfig = require("../config/mailer");
 const User = require("../model/user.model");
 
 const passwordController = {
@@ -33,14 +33,12 @@ const passwordController = {
       await user.save();
 
       // Send the reset link to the user's email
-      const transporter = nodemailer.createTransport({
-        // Configure the email provider details here
-      });
+      const transporter = nodemailer.createTransport(mailerConfig);
 
       const resetLink = `http://localhost:3000/api/v1/user/reset-password/${resetToken}`;
 
       const mailOptions = {
-        from: "opeyemireact@gmail.com",
+        from: "hembee999@gmail.com",
         to: email,
         subject: "Password Reset",
         html: `
@@ -51,7 +49,7 @@ const passwordController = {
         `,
       };
 
-     transporter.sendMail(mailOptions, (error, info) => {
+      transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
           console.error(error);
           throw new Error("Error sending reset email");
@@ -61,7 +59,7 @@ const passwordController = {
           message: "Reset email sent",
           data: {
             user: user,
-            message: mailOptions
+            message: mailOptions,
           },
         });
       });

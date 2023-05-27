@@ -20,7 +20,11 @@ const userSignupValidator = Joi.object({
   password: Joi.string()
     .min(8)
     .required()
-    .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
+    .pattern(
+      new RegExp(
+        "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,}$"
+      )
+    ),
   confirmPassword: Joi.string()
     .valid(Joi.ref("password"))
     .required()
