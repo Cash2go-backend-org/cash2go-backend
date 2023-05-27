@@ -1,10 +1,10 @@
+require("dotenv").config();
+
 const mailerConfig = {
-  host: "smtp.office365.com",
-  port: 587,
-  secure: false,
+  service: "yahoo",
   auth: {
-    user: "outlook_62E686B44B6B2FE8@outlook.com",
-    pass: "Hasagbar1",
+    user: "hembee999@yahoo.com",
+    pass: process.env.YAHOO_PASSWORD,
   },
 };
 
