@@ -1,10 +1,10 @@
 require("dotenv").config();
 
 const mailerConfig = {
-  service: "yahoo",
+  service: "gmail",
   auth: {
-    user: "hembee999@yahoo.com",
-    pass: process.env.YAHOO_PASSWORD,
+    user: "hembee999@gmail.com",
+    pass: "hasagbar",
   },
 };
 
