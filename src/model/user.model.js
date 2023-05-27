@@ -28,6 +28,12 @@ const userSchema = new mongoose.Schema({
   confirmPassword: {
     type: String,
   },
+  resetToken: {
+    type: String,
+  },
+  resetTokenExpiration: {
+    type: String,
+  },
 });
 
 const User = mongoose.model("User", userSchema);

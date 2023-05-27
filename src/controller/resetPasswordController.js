@@ -35,7 +35,7 @@ const passwordController = {
       // Send the reset link to the user's email
       const transporter = nodemailer.createTransport(mailerConfig);
 
-      const resetLink = `http://localhost:3000/api/v1/user/reset-password/${resetToken}`;
+      const resetLink = `http://cash2go-backendd.onrender.com/api/v1/user/reset-password/${resetToken}`;
 
       const mailOptions = {
         from: "hembee999@gmail.com",
@@ -73,9 +73,9 @@ const passwordController = {
   updatePasswordController: async (req, res) => {
     try {
       const token = req.headers.authorization;
-      const { password, confirmPassword } = req.body;
+      const { email, password, confirmPassword } = req.body;
       // Find the user by the reset token
-      const user = await User.findOne({ resetToken: token });
+      const user = await User.findOne({email, resetToken: token });
       if (!user) {
         throw new BadUserRequestError("Invalid or expired reset token");
       }
