@@ -115,6 +115,7 @@ const userController = {
     if (error) throw error;
     const user = await User.findOne({
       email: req.body?.email,
+      password:req.body?.password
     });
     if (!user) throw new BadUserRequestError("email does not exist");
     const hash = bcrypt.compareSync(req.body.password, user.password);
