@@ -21,7 +21,10 @@ const userSignupValidator = Joi.object({
     .min(8)
     .required()
     .pattern(
-      new RegExp("^(?=.*[A-Za-z])(?=.*d)(?=.*[!@#$%^&*])[A-Za-zd!@#$%^&*]{8,}$")
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
+    )
+    .message(
+      "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
     ),
   confirmPassword: Joi.string()
     .valid(Joi.ref("password"))
