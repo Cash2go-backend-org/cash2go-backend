@@ -75,7 +75,7 @@ const passwordController = {
       const token = req.headers.authorization;
       const { email, password, confirmPassword } = req.body;
       // Find the user by the reset token
-      const user = await User.findOne({email, resetToken: token });
+      const user = await User.findOne({email: email, resetToken: token });
       if (!user) {
         throw new BadUserRequestError("Invalid or expired reset token");
       }
