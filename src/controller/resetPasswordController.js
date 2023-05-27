@@ -28,14 +28,17 @@ const passwordController = {
       const resetToken = generateResetToken();
 
       // Set the reset token and its expiration time for the user
-      user.resetToken = resetToken;
-      user.resetTokenExpiration = Date.now() + 3600000; // Token expires in 1 hour
-      await user.save();
+      const newUser = {
+        resetToken: resetToken,
+        resetTokenExpiration: Date.now() + 3600000, // Token expires in 1 hour
+      };
+
+      await User.updateOne({ email: email }, newUser);
 
       // Send the reset link to the user's email
       const transporter = nodemailer.createTransport(mailerConfig);
 
-      const resetLink = `http://cash2go-backendd.onrender.com/api/v1/user/reset-password/${resetToken}`;
+      const resetLink = `http://cash2go-backendd.onrender.com/api/v1/user/update-password/${resetToken}`;
 
       const mailOptions = {
         from: "hembee999@gmail.com",
@@ -75,7 +78,7 @@ const passwordController = {
       const token = req.headers.authorization;
       const { email, password, confirmPassword } = req.body;
       // Find the user by the reset token
-      const user = await User.findOne({email: email, resetToken: token });
+      const user = await User.findOne({ email: email, resetToken: token });
       if (!user) {
         throw new BadUserRequestError("Invalid or expired reset token");
       }
@@ -84,12 +87,15 @@ const passwordController = {
         throw new BadUserRequestError("Reset token has expired");
       }
       // Update the user's password
-      user.password = password;
-      user.confirmPassword = confirmPassword;
-      user.resetToken = undefined;
-      user.resetTokenExpiration = undefined;
-
-      await user.save();
+      await User.updateOne(
+        { email: email },
+        {
+          password: password,
+          confirmPassword: confirmPassword,
+          resetToken: undefined,
+          resetTokenExpiration: undefined,
+        }
+      );
 
       res.status(200).json({ message: "Password updated successfully" });
     } catch (error) {

@@ -20,11 +20,11 @@ router.get(
 );
 
 //opeyemi
-router.post(
+router.patch(
   "/reset-password",
   tryCatchHandler(passwordController.resetPasswordController)
 );
-router.post(
+router.patch(
   "/update-password/:token",
   // userAuthMiddleWare,
   tryCatchHandler(passwordController.updatePasswordController)
