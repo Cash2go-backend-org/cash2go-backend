@@ -21,9 +21,7 @@ const userSignupValidator = Joi.object({
     .min(8)
     .required()
     .pattern(
-      new RegExp(
-        "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,}$"
-      )
+      new RegExp("^(?=.*[A-Za-z])(?=.*d)(?=.*[!@#$%^&*])[A-Za-zd!@#$%^&*]{8,}$")
     ),
   confirmPassword: Joi.string()
     .valid(Joi.ref("password"))
