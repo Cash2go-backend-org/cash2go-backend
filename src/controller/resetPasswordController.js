@@ -75,7 +75,7 @@ const passwordController = {
   },
   updatePasswordController: async (req, res) => {
     try {
-      const token = req.query.token;
+      const token = req.params.token;
       const { email, password, confirmPassword } = req.body;
       // Find the user by the reset token
       const user = await User.findOne({ email: email, resetToken: token });
