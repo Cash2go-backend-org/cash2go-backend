@@ -51,13 +51,19 @@ const passwordController = {
         `,
       };
 
-      transporter.sendMail(mailOptions, (error, info) => {
+     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
           console.error(error);
           throw new Error("Error sending reset email");
         }
         console.log("Reset email sent:", info.response);
-        res.status(200).json({ message: "Reset email sent" });
+        res.status(200).json({
+          message: "Reset email sent",
+          data: {
+            user: user,
+            message: mailOptions
+          },
+        });
       });
     } catch (error) {
       console.error("Error in resetPasswordController:", error);

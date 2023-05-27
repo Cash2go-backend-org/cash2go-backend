@@ -3,8 +3,8 @@ const mailerConfig = {
   port: 587,
   secure: false,
   auth: {
-    user: "hembee999@outlook.com",
-    pass: "@Hasagbar1",
+    user: "outlook_62E686B44B6B2FE8@outlook.com",
+    pass: "Hasagbar1",
   },
 };
 

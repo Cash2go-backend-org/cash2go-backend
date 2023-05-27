@@ -35,12 +35,12 @@ const userController = {
     // Generate OTP
     const otp = Math.floor(Math.random() * 8888 + 1000);
     // Send OTP email
-    // await transporter.sendMail({
-    //   from: "hembee999@outlook.com",
-    //   to: email,
-    //   subject: "CASH2GO OTP Verification",
-    //   html: `<p>Use OTP <b>${otp}</b> to verify your email</p>`,
-    // });
+    await transporter.sendMail({
+      from: "hembee999@outlook.com",
+      to: email,
+      subject: "CASH2GO OTP Verification",
+      html: `<p>Use OTP <b>${otp}</b> to verify your email</p>`,
+    });
     const user = await User.create({ email, companyID, otp });
 
     res
@@ -52,13 +52,13 @@ const userController = {
     const { email } = req.body;
     // Generate new OTP
     const newOtp = Math.floor(Math.random() * 8888 + 1000);
-    // Send OTP email
-    // await transporter.sendMail({
-    //   from: "hembee999@outlook.com",
-    //   to: email,
-    //   subject: "CASH2GO OTP Verification",
-    //   html: `<p>Use OTP <b>${newOtp}</b> to verify your email</p>`,
-    // });
+    // Resend OTP email
+    await transporter.sendMail({
+      from: "outlook_62E686B44B6B2FE8@outlook.com",
+      to: email,
+      subject: "CASH2GO OTP Verification",
+      html: `<p>Use OTP <b>${newOtp}</b> to verify your email</p>`,
+    });
     const update = { $set: { otp: newOtp } };
 
     const user = await User.updateOne({ email: email }, update);
