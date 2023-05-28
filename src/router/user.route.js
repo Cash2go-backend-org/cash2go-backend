@@ -12,6 +12,7 @@ router.get("/", (req, res) => {
 router.patch("/resend-otp", tryCatchHandler(userController.resendOTP));
 router.post("/send-otp", tryCatchHandler(userController.sendVerificationEmail));
 router.patch("/signup", tryCatchHandler(userController.userSignupController));
+router.patch("/verify-otp", tryCatchHandler(userController.verifyOtp));
 router.post("/login", tryCatchHandler(userController.userLoginController));
 router.get(
   "/search",

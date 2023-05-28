@@ -7,16 +7,17 @@ const userEmailVerification = Joi.object({
   companyID: Joi.number().required(),
 });
 
+const verifyOtpValidator = Joi.object({
+  otp: Joi.number().required(),
+});
+
 const userSignupValidator = Joi.object({
-  email: Joi.string().required().email().messages({
-    "string.pattern.base": "Email is not a valid email format/address",
-  }),
-  companyID: Joi.number().required(),
+  // email: Joi.string().required().email().messages({
+  //   "string.pattern.base": "Email is not a valid email format/address",
+  // }),
+  // companyID: Joi.number().required(),
+  // otp: Joi.number(),
   username: Joi.string().required(),
-  // otp: Joi.string().length(4),
-  // otp: Joi.string().length(4).required(),
-  otp: Joi.number(),
-  // otp: Joi.number().required(),
   password: Joi.string()
     .min(8)
     .required()
@@ -39,6 +40,7 @@ const userLoginValidator = Joi.object({
 
 module.exports = {
   userEmailVerification,
+  verifyOtpValidator,
   userSignupValidator,
   userLoginValidator,
 };

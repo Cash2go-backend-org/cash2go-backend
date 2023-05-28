@@ -14,6 +14,11 @@ const oAuth2Client = new google.auth.OAuth2(
   REDIRECT_URL
 );
 
+oAuth2Client.setCredentials({
+  refresh_token: REFRESH_TOKEN,
+});
+
+
 // Create a transporter using OAuth2
 const mailerConfig = {
   service: "gmail",
