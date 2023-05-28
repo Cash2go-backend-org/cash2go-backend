@@ -1,4 +1,4 @@
-const UnAuthorizedError = require("../error/error.js");
+const { UnAuthorizedError } = require("../error/error.js");
 const verifyToken = require("../utils/jwt.utils.js");
 
 function userAuthMiddleWare(req, res, next) {

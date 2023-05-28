@@ -4,7 +4,7 @@ const userEmailVerification = Joi.object({
   email: Joi.string().required().email().messages({
     "string.pattern.base": "Email is not a valid email format/address",
   }),
-  companyID: Joi.string().required(),
+  companyID: Joi.number().required(),
 });
 
 const userSignupValidator = Joi.object({

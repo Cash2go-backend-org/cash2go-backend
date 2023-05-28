@@ -21,7 +21,9 @@ const transporter = nodemailer.createTransport(mailerConfig);
 const userController = {
   sendVerificationEmail: async (req, res) => {
     const { error } = userEmailVerification.validate(req.body);
-    if (error) throw error;
+    // if (error) throw error;
+    if (error)
+      throw new BadUserRequestError("Company ID should contain only numbers");
     const { email, companyID } = req.body;
     const emailExists = await User.find({ email });
     if (emailExists.length > 0)
@@ -35,12 +37,13 @@ const userController = {
     // Generate OTP
     const otp = Math.floor(Math.random() * 8888 + 1000);
     // Send OTP email
-    // await transporter.sendMail({
-    //   from: "hembee999@outlook.com",
-    //   to: email,
-    //   subject: "CASH2GO OTP Verification",
-    //   html: `<p>Use OTP <b>${otp}</b> to verify your email</p>`,
-    // });
+    await transporter.sendMail({
+      from: "opeyemireact@gmail.com",
+      // from: "hembee999@outlook.com",
+      to: email,
+      subject: "CASH2GO OTP Verification",
+      html: `<p>Use OTP <b>${otp}</b> to verify your email</p>`,
+    });
     const user = await User.create({ email, companyID, otp });
 
     res
