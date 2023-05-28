@@ -126,6 +126,24 @@ const userController = {
     });
   },
 
+  securityQuestionController: async (req, res) => {
+    const { email } = req.query;
+    const { securityQuestion, securityQuestionAnswer } = req.body;
+    const user = User.findOne({ email: email });
+    if (!user) throw new BadUserRequestError("Invalid Email");
+    User.updateOne(
+      { email: email },
+      {
+        securityQuestion,
+        securityQuestionAnswer,
+      }
+    );
+    res.status(200).json({
+      status: "Success",
+      message: "Security question and answer saved successfully",
+    });
+  },
+
   userLoginController: async (req, res) => {
     const { error } = userLoginValidator.validate(req.body);
     if (error) throw error;
