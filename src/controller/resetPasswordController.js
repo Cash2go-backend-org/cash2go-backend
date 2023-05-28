@@ -100,13 +100,12 @@ const passwordController = {
   },
   updatePasswordController: async (req, res) => {
     try {
-      const token = req.headers.authorization;
+      const token = req.params.token;
       const { password, confirmPassword } = updatePasswordValidator.validate(
         req.body
       );
       // Find the user by the reset token
       const user = await User.findOne({ resetToken: token });
-      // const user = await User.findOne({ email: email, resetToken: token });
       if (!user) {
         throw new BadUserRequestError("Invalid or expired reset token");
       }
@@ -123,7 +122,7 @@ const passwordController = {
       );
       // Update the user's password
       await User.updateOne(
-        { email: user.email },
+        { resetToken: token },
         {
           password: hashedPassword,
           confirmPassword: hashedConfirmPassword,
