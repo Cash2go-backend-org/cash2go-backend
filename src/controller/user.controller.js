@@ -131,7 +131,7 @@ const userController = {
     const { securityQuestion, securityQuestionAnswer } = req.body;
     const user = User.findOne({ email: email });
     if (!user) throw new BadUserRequestError("Invalid Email");
-    User.updateOne(
+    await User.updateOne(
       { email: email },
       {
         securityQuestion: securityQuestion,
