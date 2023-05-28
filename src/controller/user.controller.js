@@ -131,7 +131,7 @@ const userController = {
     const { securityQuestion, securityQuestionAnswer } = req.body;
     const user = User.findOne({ email: email });
     if (!user) throw new BadUserRequestError("Invalid Email");
-    await User.updateOne(
+    const update = await User.updateOne(
       { email: email },
       {
         securityQuestion: securityQuestion,
@@ -141,6 +141,9 @@ const userController = {
     res.status(200).json({
       status: "Success",
       message: "Security question and answer saved successfully",
+      data: {
+        info: update,
+      },
     });
   },
 
