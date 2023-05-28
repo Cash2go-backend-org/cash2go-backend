@@ -13,6 +13,9 @@ const passwordController = {
     res.status(200).json({
       status: "success",
       message: "user verified",
+      data: {
+        user: user,
+      },
     });
   },
 
