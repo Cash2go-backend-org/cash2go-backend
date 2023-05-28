@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const globalErrorHandler = require("./src/utils/globalErrorHandler");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const { userRouter } = require("./src/router/user.route");
 const config = require("./src/config/index");
 require("dotenv").config();
@@ -19,6 +20,14 @@ const app = express();
 // Middleware
 app.use(morgan("tiny"));
 app.use(express.json());
+app.use(cors());
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
+
 
 // Routes
 app.use("/api/v1/user", userRouter);

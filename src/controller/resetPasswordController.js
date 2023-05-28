@@ -1,18 +1,43 @@
-const { userSignupValidator } = require("../validators/user.validator");
 const { BadUserRequestError } = require("../error/error");
+const {
+  verifyEmailValidator,
+  updatePasswordValidator,
+  securityQuestionandAnswerValidator,
+} = require("../validators/user.validator");
 const nodemailer = require("nodemailer");
+const mailerConfig = require("../config/mailer");
+const bcrypt = require("bcrypt");
+const config = require("../config/index");
 const User = require("../model/user.model");
 
 const passwordController = {
+  verifyEmailController: async (req, res) => {
+    const { email } = verifyEmailValidator.validate(req.body);
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new BadUserRequestError("User not found");
+    }
+    res.status(200).json({
+      status: "success",
+      message: "user verified",
+      data: {
+        user: user,
+      },
+    });
+  },
+
   resetPasswordController: async (req, res) => {
     try {
-      const { email } = req.body;
-
-      // Find the user by email
-      const user = await User.findOne({ email });
-      if (!user) {
-        throw new BadUserRequestError("User not found");
-      }
+      const { securityQuestion, securityQuestionAnswer } =
+        securityQuestionandAnswerValidator.validate(req.body);
+      const { email } = req.query;
+      const user = await User.findOne({
+        email: email,
+        securityQuestion: securityQuestion,
+        securityQuestionAnswer: securityQuestionAnswer,
+      });
+      if (!user)
+        throw new BadUserRequestError("Wrong answer to security question");
       const generateResetToken = () => {
         const characters =
           "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -28,26 +53,20 @@ const passwordController = {
       const resetToken = generateResetToken();
 
       // Set the reset token and its expiration time for the user
-      user.resetToken = resetToken;
-      user.resetTokenExpiration = Date.now() + 3600000; // Token expires in 1 hour
-      await user.save();
+      const newUser = {
+        resetToken: resetToken,
+        resetTokenExpiration: Date.now() + 3600000, // Token expires in 1 hour
+      };
+
+      await User.updateOne({ email: email }, newUser);
 
       // Send the reset link to the user's email
-      const transporter = nodemailer.createTransport({
-        // Configure the email provider details here
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: {
-          user: "opeyemireact@gmail.com",
-          pass: "fghvdenjsdprjjwg",
-        },
-      });
+      const transporter = nodemailer.createTransport(mailerConfig);
 
-      const resetLink = `http://localhost:3000/api/v1/user/reset-password/${resetToken}`;
+      const resetLink = `http://cash2go-backendd.onrender.com/api/v1/user/update-password/${resetToken}`;
 
       const mailOptions = {
-        from: "opeyemireact@gmail.com",
+        from: "hembee999@gmail.com",
         to: email,
         subject: "Password Reset",
         html: `
@@ -64,7 +83,13 @@ const passwordController = {
           throw new Error("Error sending reset email");
         }
         console.log("Reset email sent:", info.response);
-        res.status(200).json({ message: "Reset email sent" });
+        res.status(200).json({
+          message: "Reset email sent",
+          data: {
+            user: user,
+            message: mailOptions,
+          },
+        });
       });
     } catch (error) {
       console.error("Error in resetPasswordController:", error);
@@ -76,9 +101,12 @@ const passwordController = {
   updatePasswordController: async (req, res) => {
     try {
       const token = req.headers.authorization;
-      const { password, confirmPassword } = req.body;
+      const { password, confirmPassword } = updatePasswordValidator.validate(
+        req.body
+      );
       // Find the user by the reset token
       const user = await User.findOne({ resetToken: token });
+      // const user = await User.findOne({ email: email, resetToken: token });
       if (!user) {
         throw new BadUserRequestError("Invalid or expired reset token");
       }
@@ -86,13 +114,23 @@ const passwordController = {
       if (user.resetTokenExpiration < Date.now()) {
         throw new BadUserRequestError("Reset token has expired");
       }
+      //hash password
+      const saltRounds = config.bcrypt_salt_round;
+      const hashedPassword = bcrypt.hashSync(password, saltRounds);
+      const hashedConfirmPassword = bcrypt.hashSync(
+        confirmPassword,
+        saltRounds
+      );
       // Update the user's password
-      user.password = password;
-      user.confirmPassword = confirmPassword;
-      user.resetToken = undefined;
-      user.resetTokenExpiration = undefined;
-
-      await user.save();
+      await User.updateOne(
+        { email: user.email },
+        {
+          password: hashedPassword,
+          confirmPassword: hashedConfirmPassword,
+          resetToken: undefined,
+          resetTokenExpiration: undefined,
+        }
+      );
 
       res.status(200).json({ message: "Password updated successfully" });
     } catch (error) {

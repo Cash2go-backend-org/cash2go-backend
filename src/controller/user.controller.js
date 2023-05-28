@@ -2,6 +2,8 @@ const {
   userEmailVerification,
   userSignupValidator,
   userLoginValidator,
+  verifyOtpValidator,
+  securityQuestionandAnswerValidator,
 } = require("../validators/user.validator");
 const { BadUserRequestError, NotFoundError } = require("../error/error");
 require("dotenv").config();
@@ -38,8 +40,7 @@ const userController = {
     const otp = Math.floor(Math.random() * 8888 + 1000);
     // Send OTP email
     await transporter.sendMail({
-      from: "opeyemireact@gmail.com",
-      // from: "hembee999@outlook.com",
+      from: "hembee999@gmail.com",
       to: email,
       subject: "CASH2GO OTP Verification",
       html: `<p>Use OTP <b>${otp}</b> to verify your email</p>`,
@@ -52,16 +53,16 @@ const userController = {
   },
 
   resendOTP: async (req, res) => {
-    const { email } = req.body;
+    const { email } = req.query;
     // Generate new OTP
     const newOtp = Math.floor(Math.random() * 8888 + 1000);
-    // Send OTP email
-    // await transporter.sendMail({
-    //   from: "hembee999@outlook.com",
-    //   to: email,
-    //   subject: "CASH2GO OTP Verification",
-    //   html: `<p>Use OTP <b>${newOtp}</b> to verify your email</p>`,
-    // });
+    // Resend OTP email
+    await transporter.sendMail({
+      from: "hembee999@gmail.com",
+      to: email,
+      subject: "CASH2GO OTP Verification",
+      html: `<p>Use OTP <b>${newOtp}</b> to verify your email</p>`,
+    });
     const update = { $set: { otp: newOtp } };
 
     const user = await User.updateOne({ email: email }, update);
@@ -69,6 +70,24 @@ const userController = {
     res.status(200).json({
       message: "OTP resent to email for verification",
       data: { user, newOtp: newOtp },
+    });
+  },
+
+  verifyOtp: async (req, res) => {
+    const { error } = verifyOtpValidator.validate(req.body);
+    if (error) throw error;
+    const { email } = req.query;
+    const user = await User.findOne({ email: email });
+    if (!user) throw new BadUserRequestError("invalid email");
+    const { otp } = req.body;
+    const verifyOtp = await User.findOne({ email: email, otp: otp });
+    if (!verifyOtp) throw new BadUserRequestError("invalid OTP");
+    await User.updateOne({ email: email }, { isVerified: true });
+    res.status(200).json({
+      message: "OTP VERIFIED SUCCESSFULLY",
+      data: {
+        user: verifyOtp,
+      },
     });
   },
 
@@ -81,24 +100,20 @@ const userController = {
         "An account with this username already exists."
       );
 
-    const { email, companyID, username, password, confirmPassword } =
-      // const { email, otp, companyID, username, password, confirmPassword } =
-      req.body;
+    const { username, password, confirmPassword } = req.body;
+    const { email } = req.query;
+    const checkIfVerified = await User.findOne({
+      email: email,
+      isVerified: true,
+    });
+    if (!checkIfVerified) throw new BadUserRequestError("OTP not verified ");
 
     const saltRounds = config.bcrypt_salt_round;
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
     const hashedConfirmPassword = bcrypt.hashSync(confirmPassword, saltRounds);
 
-    // Find the user by email and OTP
-    const user = await User.findOne({ email, otp, companyID });
-
-    if (!user) {
-      res.status(400).json({ error: "Invalid OTP." });
-      return;
-    }
-
     const newUser = await User.updateOne(
-      { email: email },
+      { email: email, isVerified: true },
       {
         username: username,
         password: hashedPassword,
@@ -114,15 +129,37 @@ const userController = {
     });
   },
 
+  securityQuestionController: async (req, res) => {
+    const { email } = req.query;
+    const { securityQuestion, securityQuestionAnswer } =
+      securityQuestionandAnswerValidator.validate(req.body);
+    const user = User.findOne({ email: email });
+    if (!user) throw new BadUserRequestError("Invalid Email");
+    const update = await User.updateOne(
+      { email: email },
+      {
+        securityQuestion: securityQuestion,
+        securityQuestionAnswer: securityQuestionAnswer,
+      }
+    );
+    res.status(200).json({
+      status: "Success",
+      message: "Security question and answer saved successfully",
+      data: {
+        info: update,
+      },
+    });
+  },
+
   userLoginController: async (req, res) => {
     const { error } = userLoginValidator.validate(req.body);
     if (error) throw error;
     const user = await User.findOne({
       email: req.body?.email,
     });
-    if (!user) throw new BadUserRequestError("email does not exist");
+    if (!user) throw new BadUserRequestError("Incorrect email");
     const hash = bcrypt.compareSync(req.body.password, user.password);
-    if (!hash) throw new BadUserRequestError("email or password is wrong!");
+    if (!hash) throw new BadUserRequestError("incorrect password");
     res.status(200).json({
       message: "User login successful",
       status: "Success",

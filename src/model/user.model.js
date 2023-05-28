@@ -28,6 +28,19 @@ const userSchema = new mongoose.Schema({
   confirmPassword: {
     type: String,
   },
+  isVerified: Boolean,
+  securityQuestion: {
+    type: String,
+  },
+  securityQuestionAnswer: {
+    type: String,
+  },
+  resetToken: {
+    type: String,
+  },
+  resetTokenExpiration: {
+    type: String,
+  },
 });
 
 const User = mongoose.model("User", userSchema);

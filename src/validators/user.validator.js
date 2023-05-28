@@ -7,20 +7,26 @@ const userEmailVerification = Joi.object({
   companyID: Joi.number().required(),
 });
 
+const verifyOtpValidator = Joi.object({
+  otp: Joi.number().required(),
+});
+
 const userSignupValidator = Joi.object({
-  email: Joi.string().required().email().messages({
-    "string.pattern.base": "Email is not a valid email format/address",
-  }),
-  companyID: Joi.number().required(),
+  // email: Joi.string().required().email().messages({
+  //   "string.pattern.base": "Email is not a valid email format/address",
+  // }),
+  // companyID: Joi.number().required(),
+  // otp: Joi.number(),
   username: Joi.string().required(),
-  // otp: Joi.string().length(4),
-  // otp: Joi.string().length(4).required(),
-  otp: Joi.number(),
-  // otp: Joi.number().required(),
   password: Joi.string()
     .min(8)
     .required()
-    .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
+    .pattern(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
+    )
+    .message(
+      "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
+    ),
   confirmPassword: Joi.string()
     .valid(Joi.ref("password"))
     .required()
@@ -32,8 +38,40 @@ const userLoginValidator = Joi.object({
   password: Joi.string().required(),
 });
 
+const securityQuestionandAnswerValidator = Joi.object({
+  securityQuestion: Joi.string().required(),
+  securityQuestionAnswer: Joi.string().required(),
+});
+
+const verifyEmailValidator = Joi.object({
+  email: Joi.string().required().email().message({
+    "string.pattern.base": "Invalid email format",
+  }),
+});
+
+const updatePasswordValidator = Joi.object({
+  email: Joi.string().required().email(),
+  password: Joi.string()
+    .min(8)
+    .required()
+    .pattern(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
+    )
+    .message(
+      "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
+    ),
+  confirmPassword: Joi.string()
+    .valid(Joi.ref("password"))
+    .required()
+    .messages({ "any.only": "Passwords does not match" }),
+});
+
 module.exports = {
   userEmailVerification,
+  verifyOtpValidator,
   userSignupValidator,
   userLoginValidator,
+  verifyEmailValidator,
+  updatePasswordValidator,
+  securityQuestionandAnswerValidator,
 };

@@ -10,9 +10,13 @@ router.get("/", (req, res) => {
   res.send("<h1>Welcome to CASH2GO</h1>");
 });
 router.post("/send-otp", tryCatchHandler(userController.sendVerificationEmail));
-router.patch("/resend-otp", tryCatchHandler(userController.resendOTP));
 router.patch("/signup", tryCatchHandler(userController.userSignupController));
-router.get("/login", tryCatchHandler(userController.userLoginController));
+router.patch("/verify-otp", tryCatchHandler(userController.verifyOtp));
+router.patch(
+  "/security-question",
+  tryCatchHandler(userController.securityQuestionController)
+);
+router.post("/login", tryCatchHandler(userController.userLoginController));
 router.get(
   "/search",
   // userAuthMiddleWare,
@@ -20,11 +24,16 @@ router.get(
 );
 
 //opeyemi
-router.post(
+
+router.get(
+  "/verify-email",
+  tryCatchHandler(passwordController.verifyEmailController)
+);
+router.patch(
   "/reset-password",
   tryCatchHandler(passwordController.resetPasswordController)
 );
-router.post(
+router.patch(
   "/update-password/:token",
   // userAuthMiddleWare,
   tryCatchHandler(passwordController.updatePasswordController)
