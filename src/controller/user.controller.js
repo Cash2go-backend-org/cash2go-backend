@@ -134,8 +134,8 @@ const userController = {
     User.updateOne(
       { email: email },
       {
-        securityQuestion,
-        securityQuestionAnswer,
+        securityQuestion: securityQuestion,
+        securityQuestionAnswer: securityQuestionAnswer,
       }
     );
     res.status(200).json({
