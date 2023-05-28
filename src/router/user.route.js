@@ -25,6 +25,11 @@ router.get(
 );
 
 //opeyemi
+
+router.post(
+  "/verify-email",
+  tryCatchHandler(passwordController.verifyEmailController)
+);
 router.patch(
   "/reset-password",
   tryCatchHandler(passwordController.resetPasswordController)

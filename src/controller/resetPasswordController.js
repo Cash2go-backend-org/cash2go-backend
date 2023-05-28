@@ -4,15 +4,28 @@ const mailerConfig = require("../config/mailer");
 const User = require("../model/user.model");
 
 const passwordController = {
+  verifyEmailController: async (req, res) => {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new BadUserRequestError("User not found");
+    }
+    res.status(200).json({
+      status: "success",
+      message: "user verified",
+    });
+  },
+
   resetPasswordController: async (req, res) => {
     try {
-      const { email } = req.body;
-
-      // Find the user by email
-      const user = await User.findOne({ email });
-      if (!user) {
-        throw new BadUserRequestError("User not found");
-      }
+      const { securityQuestion, securityQuestionAnswer } = req.body;
+      const { email } = req.query;
+      const user = await User.findOne({
+        email: email,
+        securityQuestion: securityQuestion,
+        securityQuestionAnswer: securityQuestionAnswer,
+      });
+      if (!user) throw new BadUserRequestError("User not found");
       const generateResetToken = () => {
         const characters =
           "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
