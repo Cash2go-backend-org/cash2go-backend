@@ -3,6 +3,7 @@ const {
   userSignupValidator,
   userLoginValidator,
   verifyOtpValidator,
+  securityQuestionandAnswerValidator,
 } = require("../validators/user.validator");
 const { BadUserRequestError, NotFoundError } = require("../error/error");
 require("dotenv").config();
@@ -22,7 +23,9 @@ const transporter = nodemailer.createTransport(mailerConfig);
 const userController = {
   sendVerificationEmail: async (req, res) => {
     const { error } = userEmailVerification.validate(req.body);
-    if (error) throw error;
+    // if (error) throw error;
+    if (error)
+      throw new BadUserRequestError("Company ID should contain only numbers");
     const { email, companyID } = req.body;
     const emailExists = await User.find({ email });
     if (emailExists.length > 0)
@@ -128,7 +131,8 @@ const userController = {
 
   securityQuestionController: async (req, res) => {
     const { email } = req.query;
-    const { securityQuestion, securityQuestionAnswer } = req.body;
+    const { securityQuestion, securityQuestionAnswer } =
+      securityQuestionandAnswerValidator.validate(req.body);
     const user = User.findOne({ email: email });
     if (!user) throw new BadUserRequestError("Invalid Email");
     const update = await User.updateOne(

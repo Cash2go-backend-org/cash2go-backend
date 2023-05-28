@@ -38,9 +38,40 @@ const userLoginValidator = Joi.object({
   password: Joi.string().required(),
 });
 
+const securityQuestionandAnswerValidator = Joi.object({
+  securityQuestion: Joi.string().required(),
+  securityQuestionAnswer: Joi.string().required(),
+});
+
+const verifyEmailValidator = Joi.object({
+  email: Joi.string().required().email().message({
+    "string.pattern.base": "Invalid email format",
+  }),
+});
+
+const updatePasswordValidator = Joi.object({
+  email: Joi.string().required().email(),
+  password: Joi.string()
+    .min(8)
+    .required()
+    .pattern(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
+    )
+    .message(
+      "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
+    ),
+  confirmPassword: Joi.string()
+    .valid(Joi.ref("password"))
+    .required()
+    .messages({ "any.only": "Passwords does not match" }),
+});
+
 module.exports = {
   userEmailVerification,
   verifyOtpValidator,
   userSignupValidator,
   userLoginValidator,
+  verifyEmailValidator,
+  updatePasswordValidator,
+  securityQuestionandAnswerValidator,
 };

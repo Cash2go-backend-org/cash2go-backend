@@ -1,11 +1,18 @@
 const { BadUserRequestError } = require("../error/error");
+const {
+  verifyEmailValidator,
+  updatePasswordValidator,
+  securityQuestionandAnswerValidator,
+} = require("../validators/user.validator");
 const nodemailer = require("nodemailer");
 const mailerConfig = require("../config/mailer");
+const bcrypt = require("bcrypt");
+const config = require("../config/index");
 const User = require("../model/user.model");
 
 const passwordController = {
   verifyEmailController: async (req, res) => {
-    const { email } = req.body;
+    const { email } = verifyEmailValidator.validate(req.body);
     const user = await User.findOne({ email });
     if (!user) {
       throw new BadUserRequestError("User not found");
@@ -21,7 +28,8 @@ const passwordController = {
 
   resetPasswordController: async (req, res) => {
     try {
-      const { securityQuestion, securityQuestionAnswer } = req.body;
+      const { securityQuestion, securityQuestionAnswer } =
+        securityQuestionandAnswerValidator.validate(req.body);
       const { email } = req.query;
       const user = await User.findOne({
         email: email,
@@ -93,9 +101,11 @@ const passwordController = {
   updatePasswordController: async (req, res) => {
     try {
       const token = req.params.token;
-      const {password, confirmPassword } = req.body;
+      const { password, confirmPassword } = updatePasswordValidator.validate(
+        req.body
+      );
       // Find the user by the reset token
-      const user = await User.findOne({resetToken: token });
+      const user = await User.findOne({ resetToken: token });
       if (!user) {
         throw new BadUserRequestError("Invalid or expired reset token");
       }
@@ -103,12 +113,19 @@ const passwordController = {
       if (user.resetTokenExpiration < Date.now()) {
         throw new BadUserRequestError("Reset token has expired");
       }
+      //hash password
+      const saltRounds = config.bcrypt_salt_round;
+      const hashedPassword = bcrypt.hashSync(password, saltRounds);
+      const hashedConfirmPassword = bcrypt.hashSync(
+        confirmPassword,
+        saltRounds
+      );
       // Update the user's password
       await User.updateOne(
         { resetToken: token },
         {
-          password: password,
-          confirmPassword: confirmPassword,
+          password: hashedPassword,
+          confirmPassword: hashedConfirmPassword,
           resetToken: undefined,
           resetTokenExpiration: undefined,
         }
