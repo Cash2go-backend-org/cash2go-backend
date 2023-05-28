@@ -12,7 +12,9 @@ const User = require("../model/user.model");
 
 const passwordController = {
   verifyEmailController: async (req, res) => {
-    const { email } = verifyEmailValidator.validate(req.body);
+    const { error } = verifyEmailValidator.validate(req.body);
+    if (error) throw error;
+    const { email } = req.query;
     const user = await User.findOne({ email });
     if (!user) {
       throw new BadUserRequestError("User not found");
@@ -28,6 +30,9 @@ const passwordController = {
 
   resetPasswordController: async (req, res) => {
     try {
+      // const { error } = securityQuestionandAnswerValidator.validate(req.body);
+      // if (error) throw error;
+      // const { securityQuestion, securityQuestionAnswer } = req.body;
       const { securityQuestion, securityQuestionAnswer } =
         securityQuestionandAnswerValidator.validate(req.body);
       const { email } = req.query;
