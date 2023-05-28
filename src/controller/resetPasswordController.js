@@ -28,7 +28,8 @@ const passwordController = {
         securityQuestion: securityQuestion,
         securityQuestionAnswer: securityQuestionAnswer,
       });
-      if (!user) throw new BadUserRequestError("User not found");
+      if (!user)
+        throw new BadUserRequestError("Wrong answer to security question");
       const generateResetToken = () => {
         const characters =
           "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
