@@ -101,9 +101,9 @@ const passwordController = {
   updatePasswordController: async (req, res) => {
     try {
       const token = req.params.token;
-      const { password, confirmPassword } = updatePasswordValidator.validate(
-        req.body
-      );
+      const { error } = updatePasswordValidator.validate(req.body);
+      if (error) throw error;
+      const { password, confirmPassword } = req.body;
       // Find the user by the reset token
       const user = await User.findOne({ resetToken: token });
       if (!user) {
