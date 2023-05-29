@@ -6,7 +6,7 @@ const applicantSignupValidator = Joi.object({
   email: Joi.string().required().email().messages({
     "string.pattern.base": "Email is not a valid email format/address",
   }),
-  phoneNumber: Joi.number().required(),
+  phoneNumber: Joi.string().required(),
 });
 
 module.exports = {

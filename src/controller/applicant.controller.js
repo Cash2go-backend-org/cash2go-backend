@@ -16,7 +16,7 @@ const applicantController = {
 
     // const { firstName, lastName, email, phoneNumber } = req.body;
 
-    const newApplicant = await User.create({
+    const newApplicant = await Applicant.create({
       firstName: firstName,
       lastName: lastName,
       email: email,
@@ -30,9 +30,10 @@ const applicantController = {
       },
     });
   },
-
   searchApplicantController: async (req, res) => {
-    const applicant = await User.findOne({ firstname: req.query?.firstname });
+    const applicant = await Applicant.findOne({
+      firstname: req.query?.firstname,
+    });
     if (!applicant) throw new NotFoundError("Applicant not found");
 
     res.status(200).json({
@@ -40,6 +41,24 @@ const applicantController = {
       status: "Success",
       data: {
         applicant,
+      },
+    });
+  },
+  getApplicantDetailsController: async (req, res) => {
+    const applicantId = req.params._id;
+    const applicant = await Applicant.findOne(applicantId);
+    if (!applicant) throw new NotFoundError("Applicant not found");
+
+    const { firstName, lastName, email, phoneNumber } = applicant;
+
+    res.status(200).json({
+      message: "Applicant contact details retrieved successfully",
+      status: "Success",
+      data: {
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
       },
     });
   },

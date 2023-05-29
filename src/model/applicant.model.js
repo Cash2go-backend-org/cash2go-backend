@@ -21,14 +21,14 @@ const applicantSchema = new mongoose.Schema({
     },
   },
   phoneNumber: {
-    type: Number,
+    type: String,
     required: true,
-    // validators: {
-    //   match: [
-    //     /^[+]{1}(?:[0-9\-\(\)\/\.]\s?){6, 15}[0-9]{1}$/,
-    //     "Please add a valid phone number with a country code to the phone number path.",
-    //   ],
-    // },
+    validators: {
+      match: [
+        /^[+]{1}(?:[0-9\-\(\)\/\.]\s?){6, 15}[0-9]{1}$/,
+        "Please add a valid phone number with a country code to the phone number path.",
+      ],
+    },
   },
 });
 
