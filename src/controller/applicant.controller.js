@@ -35,12 +35,12 @@ const applicantController = {
       firstname: req.query?.firstname,
     });
     if (!applicant) throw new NotFoundError("Applicant not found");
-
+    const { firstName } = applicant;
     res.status(200).json({
       message: "Applicant name found successfully",
       status: "Success",
       data: {
-        applicant,
+        firstName,
       },
     });
   },
@@ -49,16 +49,11 @@ const applicantController = {
     const applicant = await Applicant.findOne(applicantId);
     if (!applicant) throw new NotFoundError("Applicant not found");
 
-    const { firstName, lastName, email, phoneNumber } = applicant;
-
     res.status(200).json({
       message: "Applicant contact details retrieved successfully",
       status: "Success",
       data: {
-        firstName,
-        lastName,
-        email,
-        phoneNumber,
+        applicant,
       },
     });
   },
