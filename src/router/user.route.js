@@ -1,6 +1,7 @@
 const express = require("express");
 const userController = require("../controller/user.controller");
 const passwordController = require("../controller/resetPasswordController");
+const applicantController = require("../controller/applicant.controller");
 const tryCatchHandler = require("../utils/tryCatchHandler");
 const userAuthMiddleWare = require("../middleware/auth.middleware");
 
@@ -39,5 +40,15 @@ router.patch(
   tryCatchHandler(passwordController.updatePasswordController)
 );
 router.post("/logout", tryCatchHandler(userController.userLogoutController));
+
+//applicant
+router.post(
+  "/applicant-signup",
+  tryCatchHandler(applicantController.applicantSignupController)
+);
+router.get(
+  "/search-applicant",
+  tryCatchHandler(applicantController.searchApplicantController)
+);
 
 module.exports = { userRouter: router };
