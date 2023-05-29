@@ -25,7 +25,7 @@ router.get(
 
 //opeyemi
 
-router.get(
+router.post(
   "/verify-email",
   tryCatchHandler(passwordController.verifyEmailController)
 );
