@@ -7,7 +7,7 @@ const userAuthMiddleWare = require("../middleware/auth.middleware");
 const router = new express.Router();
 
 router.get("/", (req, res) => {
-  res.sendfile(__dirname+ "/index.html");
+  res.sendfile(__dirname + "/index.html");
 });
 router.post("/send-otp", tryCatchHandler(userController.sendVerificationEmail));
 router.patch("/signup", tryCatchHandler(userController.userSignupController));
