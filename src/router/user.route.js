@@ -7,7 +7,7 @@ const userAuthMiddleWare = require("../middleware/auth.middleware");
 const router = new express.Router();
 
 router.get("/", (req, res) => {
-  res.send("<h1>Welcome to CASH2GO</h1>");
+  res.sendfile(__dirname+ "/index.html");
 });
 router.post("/send-otp", tryCatchHandler(userController.sendVerificationEmail));
 router.patch("/signup", tryCatchHandler(userController.userSignupController));
@@ -24,7 +24,6 @@ router.get(
 );
 
 //opeyemi
-
 router.post(
   "/verify-email",
   tryCatchHandler(passwordController.verifyEmailController)
