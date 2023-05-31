@@ -14,7 +14,7 @@ const passwordController = {
   verifyEmailController: async (req, res) => {
     const { error } = verifyEmailValidator.validate(req.body);
     if (error) throw error;
-    const { email } = req.query;
+    const { email } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
       throw new BadUserRequestError("User not found");
