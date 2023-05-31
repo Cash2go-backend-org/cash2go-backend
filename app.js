@@ -4,6 +4,8 @@ const globalErrorHandler = require("./src/utils/globalErrorHandler");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const { userRouter } = require("./src/router/user.route");
+const { applicantRouter } = require("./src/router/applicant.route");
+const { predictionRouter } = require("./src/router/prediction.route");
 const config = require("./src/config/index");
 require("dotenv").config();
 
@@ -24,6 +26,8 @@ app.use(cors());
 
 // Routes
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/applicant", applicantRouter);
+app.use("/api/v1/prediction", predictionRouter);
 app.use(
   cors({
     origin: "http://localhost:3000",
