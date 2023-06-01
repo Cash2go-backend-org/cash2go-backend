@@ -28,6 +28,11 @@ router.post(
   "/verify-email",
   tryCatchHandler(passwordController.verifyEmailController)
 );
+router.get(
+  "/get-security-question",
+  tryCatchHandler(passwordController.getSecurityQuestion)
+);
+
 router.patch(
   "/reset-password",
   tryCatchHandler(passwordController.resetPasswordController)
