@@ -29,7 +29,7 @@ router.post(
   tryCatchHandler(passwordController.verifyEmailController)
 );
 router.get(
-  "/securityQuestion",
+  "/security-question",
   tryCatchHandler(userController.getSecurityQuestion)
 );
 
