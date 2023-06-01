@@ -56,7 +56,7 @@ const applicantController = {
   getAllApplicantsController: async (req, res) => {
     const applicants = await Applicant.find();
     res.status(200).json({
-      message: "Users found successfully",
+      message: "Applicants found successfully",
       data: {
         applicants: applicants,
       },
