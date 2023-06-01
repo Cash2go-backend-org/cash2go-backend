@@ -2,7 +2,6 @@ const {
   applicantSignupValidator,
 } = require("../validators/applicant.validator");
 const { BadUserRequestError, NotFoundError } = require("../error/error");
-// require("dotenv").config();
 const Applicant = require("../model/applicant.model");
 
 const applicantController = {
@@ -13,8 +12,6 @@ const applicantController = {
     const emailExists = await Applicant.find({ email: req.body.email });
     if (emailExists.length > 0)
       throw new BadUserRequestError("A user with this email already exists.");
-
-    // const { firstName, lastName, email, phoneNumber } = req.body;
 
     const newApplicant = await Applicant.create({
       firstName: firstName,
@@ -35,12 +32,11 @@ const applicantController = {
       firstname: req.query?.firstname,
     });
     if (!applicant) throw new NotFoundError("Applicant not found");
-    const { firstName } = applicant;
     res.status(200).json({
       message: "Applicant name found successfully",
       status: "Success",
       data: {
-        firstName,
+        applicant,
       },
     });
   },
@@ -54,6 +50,15 @@ const applicantController = {
       status: "Success",
       data: {
         applicant,
+      },
+    });
+  },
+  getAllApplicantsController: async (req, res) => {
+    const applicants = await Applicant.find();
+    res.status(200).json({
+      message: "Users found successfully",
+      data: {
+        users: users,
       },
     });
   },

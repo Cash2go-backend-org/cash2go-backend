@@ -1,4 +1,4 @@
-const { mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 const Applicant = require("../model/applicant.model");
 
 const predictionSchema = new mongoose.Schema({
@@ -30,8 +30,6 @@ const predictionSchema = new mongoose.Schema({
   isPending: Boolean,
   isRejected: Boolean,
   author: {
-    // type: Schema.Types.ObjectId,
-    // ref: Applicant,
     type: mongoose.Schema.Types.ObjectId,
     ref: "Applicant",
   },

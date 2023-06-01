@@ -21,7 +21,7 @@ const applicantSchema = new mongoose.Schema({
     },
   },
   phoneNumber: {
-    type: String,
+    type: Number,
     required: true,
     validators: {
       match: [
