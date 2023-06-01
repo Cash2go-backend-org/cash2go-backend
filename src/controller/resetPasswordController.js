@@ -23,7 +23,7 @@ const passwordController = {
       status: "success",
       message: "user verified",
       data: {
-        user: user,
+        user: user.securityQuestion,
       },
     });
   },
