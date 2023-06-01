@@ -30,7 +30,7 @@ router.post(
 );
 router.get(
   "/get-security-question",
-  tryCatchHandler(userController.getSecurityQuestion)
+  tryCatchHandler(passwordController.getSecurityQuestion)
 );
 
 router.patch(
