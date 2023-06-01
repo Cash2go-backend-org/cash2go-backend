@@ -27,6 +27,22 @@ const passwordController = {
       },
     });
   },
+  
+  getSecurityQuestion: async (req, res) => {
+    const { email } = req.query;
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new BadUserRequestError("User not found");
+    }
+    res.status(200).json({
+      status: "success",
+      message: "Question found",
+      data: {
+        question: user.securityQuestion,
+      },
+    });
+  },
+  
 
   resetPasswordController: async (req, res) => {
     try {
