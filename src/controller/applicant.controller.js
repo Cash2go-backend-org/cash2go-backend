@@ -8,17 +8,12 @@ const applicantController = {
   applicantSignupController: async (req, res) => {
     const { error } = applicantSignupValidator.validate(req.body);
     if (error) throw error;
-    const { firstName, lastName, email, phoneNumber } = req.body;
-    const emailExists = await Applicant.find({ email: req.body.email });
-    if (emailExists.length > 0)
-      throw new BadUserRequestError("A user with this email already exists.");
+    // const { firstName, lastName, email, phoneNumber } = req.body;
+    // const emailExists = await Applicant.find({ email: req.body.email });
+    // if (emailExists.length > 0)
+    //   throw new BadUserRequestError("A user with this email already exists.");
 
-    const newApplicant = await Applicant.create({
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phoneNumber: phoneNumber,
-    });
+    const newApplicant = await Applicant.create(req.body);
     res.status(201).json({
       message: "A new applicant has been created successfully",
       status: "Success",
