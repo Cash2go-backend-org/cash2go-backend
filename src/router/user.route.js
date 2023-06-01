@@ -33,11 +33,11 @@ router.get(
   tryCatchHandler(passwordController.getSecurityQuestion)
 );
 
-router.patch(
+router.post(
   "/reset-password",
   tryCatchHandler(passwordController.resetPasswordController)
 );
-router.patch(
+router.post(
   "/update-password/:token",
   // userAuthMiddleWare,
   tryCatchHandler(passwordController.updatePasswordController)
