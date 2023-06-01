@@ -58,7 +58,7 @@ const applicantController = {
     res.status(200).json({
       message: "Users found successfully",
       data: {
-        users: users,
+        applicants: applicants,
       },
     });
   },
