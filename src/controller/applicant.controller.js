@@ -26,7 +26,7 @@ const applicantController = {
     const applicant = await Applicant.findOne({
       firstname: req.query.firstname,
     });
-    if (!applicant) throw new NotFoundError("Applicant not found");
+    if (!applicant) throw new BadUserRequestError("Applicant not found");
     res.status(200).json({
       message: "Applicant name found successfully",
       status: "Success",
