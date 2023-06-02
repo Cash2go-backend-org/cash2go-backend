@@ -6,8 +6,8 @@ const Applicant = require("../model/applicant.model");
 
 const applicantController = {
   applicantSignupController: async (req, res) => {
-    const { error } = applicantSignupValidator.validate(req.body);
-    if (error) throw error;
+    // const { error } = applicantSignupValidator.validate(req.body);
+    // if (error) throw error;
     // const { firstName, lastName, email, phoneNumber } = req.body;
 
     const newApplicant = await Applicant.create(req.body);
