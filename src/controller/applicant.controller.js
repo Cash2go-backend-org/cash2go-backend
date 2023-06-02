@@ -24,7 +24,7 @@ const applicantController = {
   },
   searchApplicantController: async (req, res) => {
     const applicant = await Applicant.findOne({
-      firstname: req.query?.firstname,
+      firstname: req.query.firstname,
     });
     if (!applicant) throw new NotFoundError("Applicant not found");
     res.status(200).json({
