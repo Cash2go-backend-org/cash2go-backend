@@ -82,7 +82,7 @@ const passwordController = {
       // Send the reset link to the user's email
       const transporter = nodemailer.createTransport(mailerConfig);
 
-      const resetLink = `https://sparkling-mousse-072041.netlify.app/new-password/${resetToken}`;
+      const resetLink = `https://sparkling-mousse-072041.netlify.app/update-password/${resetToken}`;
 
       const mailOptions = {
         from: "hembee999@gmail.com",
