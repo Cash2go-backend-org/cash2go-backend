@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
   res.sendfile(__dirname + "/index.html");
 });
 router.post("/send-otp", tryCatchHandler(userController.sendVerificationEmail));
-router.post("/resend-otp", tryCatchHandler(userController.sendVerificationEmail));
+router.patch("/resend-otp", tryCatchHandler(userController.resendOTP));
 router.patch("/signup", tryCatchHandler(userController.userSignupController));
 router.patch("/verify-otp", tryCatchHandler(userController.verifyOtp));
 router.patch(
