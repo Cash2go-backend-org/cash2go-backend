@@ -1,25 +1,28 @@
 const express = require("express");
-const applicantController = require("../controller/applicant.controller");
+const contactController = require("../controller/applicantContact.controller");
 const tryCatchHandler = require("../utils/tryCatchHandler");
+const { applicantController } = require("../controller/applicant.controller");
 
 const router = new express.Router();
 
 //applicant
 router.post(
   "/applicant-signup",
-  tryCatchHandler(applicantController.applicantSignupController)
+  tryCatchHandler(contactController.applicantSignupController)
 );
 router.get(
   "/search-applicant",
-  tryCatchHandler(applicantController.searchApplicantController)
+  tryCatchHandler(contactController.searchApplicantController)
 );
 router.get(
   "/applicant-contact-details",
-  tryCatchHandler(applicantController.getApplicantDetailsController)
+  tryCatchHandler(contactController.getApplicantContactDetailsController)
 );
 router.get(
   "/applicants",
-  tryCatchHandler(applicantController.getAllApplicantsController)
+  tryCatchHandler(contactController.getAllApplicantsController)
 );
+router.post("/create-applicant", tryCatchHandler(applicantController.createApplicantController));
+router.get("/contact/:id", tryCatchHandler(applicantController.getApplicantContact))
 
 module.exports = { applicantRouter: router };

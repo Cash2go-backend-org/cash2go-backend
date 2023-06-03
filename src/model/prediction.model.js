@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Applicant = require("../model/applicant.model");
+const Applicant = require("./applicantContact.model");
 
 const predictionSchema = new mongoose.Schema({
   loanRequestAmount: {
@@ -29,10 +29,6 @@ const predictionSchema = new mongoose.Schema({
   isApproved: Boolean,
   isPending: Boolean,
   isRejected: Boolean,
-  author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Applicant",
-  },
 });
 
 const Prediction = mongoose.model("Prediction", predictionSchema);

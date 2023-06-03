@@ -1,18 +1,7 @@
 const Joi = require("joi");
 
-const applicantSignupValidator = Joi.object({
-  firstName: Joi.string().required(),
-  lastName: Joi.string().required(),
-  gender: Joi.string(),
-  DOB: Joi.string(),
-  address: Joi.string(),
-  stateOfOrigin: Joi.string(),
-  adressOfEmployer: Joi.string(),
-  phoneNumber: Joi.string().required(),
-  nextOfKinPhoneNumber: Joi.string(),
-  others: Joi.string(),
+const ApplicantValidator = Joi.object({
+  contact: Joi.string().required(),
+  prediction: Joi.string().required(),
 });
-
-module.exports = {
-  applicantSignupValidator,
-};
+module.exports = ApplicantValidator;

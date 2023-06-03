@@ -1,6 +1,6 @@
 const { predictionValidator } = require("../validators/prediction.validator");
 const { BadUserRequestError, NotFoundError } = require("../error/error");
-const Applicant = require("../model/applicant.model");
+const Applicant = require("../model/applicantContact.model");
 const Prediction = require("../model/prediction.model");
 
 const predictionController = {

@@ -5,8 +5,7 @@ const CLIENT_ID =
 const CLIENT_SECRET = "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";
 const REDIRECT_URL = "https://developers.google.com/oauthplayground";
 const REFRESH_TOKEN =
-  "1//04h-prs7Rzj7FCgYIARAAGAQSNwF-L9IrCLSMRhL5RaEKdEjhQR_Xlpgso8KGSxKH-RaNRH8FVBXTNw0xn-1rpgyMEiB2fEjWZQw";
-
+  "1//040LErO_bJZ0_CgYIARAAGAQSNwF-L9IrfIVaCVabyfFrb8nvJR-ksR6iiepgEJXso6R8uylob8OMdCPkh2KtxCCLs3bXFHag5iw";
 // Set up OAuth2 credentials
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
@@ -17,7 +16,6 @@ const oAuth2Client = new google.auth.OAuth2(
 oAuth2Client.setCredentials({
   refresh_token: REFRESH_TOKEN,
 });
-
 
 // Create a transporter using OAuth2
 const mailerConfig = {
