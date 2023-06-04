@@ -40,5 +40,9 @@ router.get(
   "/contact/:id",
   tryCatchHandler(applicantController.getApplicantContact)
 );
+router.get(
+  "/prediction/:id",
+  tryCatchHandler(applicantController.getApplicantContact)
+);
 
 module.exports = { applicantRouter: router };
