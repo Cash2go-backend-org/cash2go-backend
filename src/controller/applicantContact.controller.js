@@ -20,9 +20,9 @@ const contactController = {
   },
   searchApplicantController: async (req, res) => {
     const contact = await Contact.findOne({
-      firstname: req.query.firstname,
+      firstName: req.query.firstName,
     });
-    if (!applicant) throw new BadUserRequestError("Contact not found");
+    if (!contact) throw new BadUserRequestError("Contact not found");
     res.status(200).json({
       message: "Contact name found successfully",
       status: "Success",
