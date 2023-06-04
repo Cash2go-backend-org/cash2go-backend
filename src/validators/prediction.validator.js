@@ -1,10 +1,10 @@
 const Joi = require("joi");
 
 const predictionValidator = Joi.object({
-  loanRequestAmount: Joi.string(),
+  loanRequestAmount: Joi.number(),
   creditScore: Joi.number(),
   creditUtilization: Joi.string(),
-  annualIncome: Joi.string(),
+  annualIncome: Joi.number(),
   loanDuration: Joi.string(),
   previousLoanPerfomance: Joi.string(),
   lastLoanApplication: Joi.string(),
