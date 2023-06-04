@@ -5,7 +5,7 @@ const { BadUserRequestError, NotFoundError } = require("../error/error");
 const Contact = require("../model/applicantContact.model");
 
 const contactController = {
-  applicantSignupController: async (req, res) => {
+  applicantContactController: async (req, res) => {
     const { error } = applicantSignupValidator.validate(req.body);
     if (error) throw error;
 

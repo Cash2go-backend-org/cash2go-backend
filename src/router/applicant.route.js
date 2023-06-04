@@ -8,7 +8,7 @@ const router = new express.Router();
 //applicant
 router.post(
   "/applicant-contact",
-  tryCatchHandler(contactController.applicantSignupController)
+  tryCatchHandler(contactController.applicantContactController)
 );
 router.get(
   "/search-applicant",
