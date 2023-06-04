@@ -7,7 +7,7 @@ const router = new express.Router();
 
 //applicant
 router.post(
-  "/applicant-signup",
+  "/applicant-contact",
   tryCatchHandler(contactController.applicantSignupController)
 );
 router.get(
@@ -22,6 +22,8 @@ router.get(
   "/applicants",
   tryCatchHandler(contactController.getAllApplicantsController)
 );
+
+// Mubarak
 router.post("/create-applicant", tryCatchHandler(applicantController.createApplicantController));
 router.get("/contact/:id", tryCatchHandler(applicantController.getApplicantContact))
 
