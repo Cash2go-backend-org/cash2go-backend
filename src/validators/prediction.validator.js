@@ -8,7 +8,7 @@ const predictionValidator = Joi.object({
   loanDuration: Joi.string(),
   previousLoanPerfomance: Joi.string(),
   lastLoanApplication: Joi.string(),
-  gurantorsCreditScore: Joi.number(),
+  guarantorsCreditScore: Joi.number(),
   isApproved: Joi.boolean(),
   isPending: Joi.boolean(),
   isRejected: Joi.boolean(),
