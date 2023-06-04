@@ -45,4 +45,17 @@ router.get(
   tryCatchHandler(applicantController.getApplicantPrediction)
 );
 
+router.get(
+  "/approved-applicants",
+  tryCatchHandler(applicantController.getApprovedApplicants)
+);
+router.get(
+  "/pending-applicants",
+  tryCatchHandler(applicantController.getPendingApplicants)
+);
+router.get(
+  "/rejected-applicants",
+  tryCatchHandler(applicantController.getRejectedApplicants)
+);
+
 module.exports = { applicantRouter: router };
