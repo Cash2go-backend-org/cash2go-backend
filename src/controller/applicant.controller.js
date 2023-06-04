@@ -46,6 +46,61 @@ const applicantController = {
 
     res.status(200).json({ "prediction info": prediction });
   },
+
+  getApprovedApplicants: async (req, res) => {
+    const approvedApplicants = await Applicant.find({ isApproved: true });
+
+    if (!approvedApplicants) {
+      return res.status(404).json({
+        message: "No approved applicants found",
+        status: "Error",
+      });
+    }
+
+    res.status(200).json({
+      message: "Approved applicants retrieved successfully",
+      status: "Success",
+      data: {
+        approvedApplicants,
+      },
+    });
+  },
+  getPendingApplicants: async (req, res) => {
+    const pendingApplicants = await Applicant.find({ isPending: true });
+
+    if (!pendingApplicants) {
+      return res.status(404).json({
+        message: "No pending applicants found",
+        status: "Failed",
+      });
+    }
+
+    res.status(200).json({
+      message: "Pending applicants retrieved successfully",
+      status: "Success",
+      data: {
+        pendingApplicants,
+      },
+    });
+  },
+  getRejectedApplicants: async (req, res) => {
+    const rejectedApplicants = await Applicant.find({ isRejected: true });
+
+    if (rejectedApplicants) {
+      return res.status(404).json({
+        message: "No rejected applicants found",
+        status: "Failed",
+      });
+    }
+
+    res.status(200).json({
+      message: "Rejected applicants retrieved successfully",
+      status: "Success",
+      data: {
+        rejectedApplicants,
+      },
+    });
+  },
 };
 
 module.exports = applicantController;
