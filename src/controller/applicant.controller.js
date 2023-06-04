@@ -1,4 +1,5 @@
 const Applicant = require("../model/applicant.model");
+const Prediction = require("../model/prediction.model");
 const ApplicantValidator = require("../validators/applicant.validator");
 const applicantController = {
   createApplicantController: async (req, res) => {
@@ -68,7 +69,7 @@ const applicantController = {
     });
   },
   getPendingApplicants: async (req, res) => {
-    const pendingApplicants = await Applicant.find({ isPending: true });
+    const pendingApplicants = await Prediction.find({ isPending: true });
 
     if (!pendingApplicants) {
       return res.status(404).json({
@@ -86,9 +87,9 @@ const applicantController = {
     });
   },
   getRejectedApplicants: async (req, res) => {
-    const rejectedApplicants = await Applicant.find({ isRejected: true });
+    const rejectedApplicants = await Prediction.find({ isRejected: true });
 
-    if (rejectedApplicants) {
+    if (rejectedApplicants.length === 0) {
       return res.status(404).json({
         message: "No rejected applicants found",
         status: "Failed",
