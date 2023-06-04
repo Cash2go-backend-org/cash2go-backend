@@ -22,7 +22,6 @@ const predictionController = {
       isRejected,
     } = req.body;
 
-
     // const existingPrediction = await Prediction.findOne({
     //   loanRequestAmount,
     //   creditScore,
