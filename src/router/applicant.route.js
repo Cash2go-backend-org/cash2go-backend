@@ -42,7 +42,7 @@ router.get(
 );
 router.get(
   "/prediction/:id",
-  tryCatchHandler(applicantController.getApplicantContact)
+  tryCatchHandler(applicantController.getApplicantPrediction)
 );
 
 module.exports = { applicantRouter: router };
