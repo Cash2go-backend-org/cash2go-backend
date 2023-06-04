@@ -22,7 +22,7 @@ const contactController = {
     const contact = await Contact.findOne({
       firstname: req.query.firstname,
     });
-    if (!applicant) throw new BadUserRequestError("Contact not found");
+    if (!contact) throw new BadUserRequestError("Contact not found");
     res.status(200).json({
       message: "Contact name found successfully",
       status: "Success",
