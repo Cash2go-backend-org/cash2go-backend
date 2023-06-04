@@ -31,4 +31,4 @@ const applicantController = {
   },
 };
 
-module.exports = { applicantController };
+module.exports = applicantController;
