@@ -27,7 +27,6 @@ app.use(cors());
 // Routes
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/applicant", applicantRouter);
-app.use("/api/v1/prediction", predictionRouter);
 app.use(
   cors({
     origin: "http://localhost:3000",

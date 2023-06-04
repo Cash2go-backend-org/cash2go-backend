@@ -1,11 +1,12 @@
 const express = require("express");
 const contactController = require("../controller/applicantContact.controller");
 const tryCatchHandler = require("../utils/tryCatchHandler");
-const { applicantController } = require("../controller/applicant.controller");
+const applicantController = require("../controller/applicant.controller");
+const predictionController = require("../controller/prediction.controller");
 
 const router = new express.Router();
 
-//applicant
+//applicant contact
 router.post(
   "/applicant-contact",
   tryCatchHandler(contactController.applicantContactController)
@@ -23,8 +24,21 @@ router.get(
   tryCatchHandler(contactController.getAllApplicantsController)
 );
 
+//applicant prediction details
+
+router.post(
+  "/applicant-prediction",
+  tryCatchHandler(predictionController.createPrediction)
+);
+
 // Mubarak
-router.post("/create-applicant", tryCatchHandler(applicantController.createApplicantController));
-router.get("/contact/:id", tryCatchHandler(applicantController.getApplicantContact))
+router.post(
+  "/create-applicant",
+  tryCatchHandler(applicantController.createApplicantController)
+);
+router.get(
+  "/contact/:id",
+  tryCatchHandler(applicantController.getApplicantContact)
+);
 
 module.exports = { applicantRouter: router };
