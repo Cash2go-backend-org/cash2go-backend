@@ -45,7 +45,7 @@ const contactController = {
     });
   },
   getAllApplicantsController: async (req, res) => {
-    const applicants = await Applicant.find();
+    const applicants = await Contact.find();
     res.status(200).json({
       message: "Applicants found successfully",
       data: {
