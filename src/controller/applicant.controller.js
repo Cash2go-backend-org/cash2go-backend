@@ -52,7 +52,6 @@ const applicantController = {
     const approvedApplicants = await Applicant.find({
       isApproved: true,
     }).populate("prediction");
-    
 
     if (!approvedApplicants) {
       return res.status(404).json({
