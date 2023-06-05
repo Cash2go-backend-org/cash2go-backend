@@ -50,7 +50,7 @@ const applicantController = {
 
   getApprovedApplicants: async (req, res) => {
     const approvedApplicants = await Applicant.find({
-      "prediction.isApproved": true,
+      "prediction.isApproved": trbb,
     }).populate("prediction");
 
     if (!approvedApplicants) {
