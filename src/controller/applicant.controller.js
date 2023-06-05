@@ -49,9 +49,7 @@ const applicantController = {
   },
 
   getApprovedApplicants: async (req, res) => {
-    const approvedApplicants = await Applicant.find({
-      loanDuration: "6 Months",
-    }).populate("prediction");
+    const approvedApplicants = await Applicant.find();
 
     if (!approvedApplicants) {
       return res.status(404).json({
