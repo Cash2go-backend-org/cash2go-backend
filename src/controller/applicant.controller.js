@@ -50,8 +50,8 @@ const applicantController = {
 
   getApprovedApplicants: async (req, res) => {
     const approvedApplicants = await Applicant.find({
-      isApproved: true,
-    }).populate("prediction");
+      firstName: req.query?.firstName
+    }).populate("contact");
 
     if (!approvedApplicants) {
       return res.status(404).json({
