@@ -53,6 +53,7 @@ const applicantController = {
       "prediction.isApproved": true,
     }).populate("prediction");
     
+
     if (!approvedApplicants) {
       return res.status(404).json({
         message: "No approved applicants found",
