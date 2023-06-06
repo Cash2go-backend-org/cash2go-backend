@@ -59,6 +59,7 @@ const applicantController = {
         status: "Error",
       });
     }
+    console.log(approvedApplicants)
 
     res.status(200).json({
       message: "Approved applicants retrieved successfully",
