@@ -50,10 +50,10 @@ const applicantController = {
 
   getApprovedApplicants: async (req, res) => {
     const approvedApplicants = await Applicant.find({
-      "prediction.isApproved": true,
-    })
+      "prediction.isApproved": "true",
+    }).populate("prediction");
 
-    if (!approvedApplicants) {
+    if (approvedApplicants.length === 0) {
       return res.status(404).json({
         message: "No approved applicants found",
         status: "Error",
@@ -69,6 +69,7 @@ const applicantController = {
         approvedApplicants: {
           contact: contactInfo,
           prediction: predictionInfo,
+          approvedApplicants
         },
       },
     });
