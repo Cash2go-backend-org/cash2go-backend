@@ -49,7 +49,9 @@ const applicantController = {
   },
 
   getApprovedApplicants: async (req, res) => {
-    const approvedApplicants = await Applicant.find().populate("prediction");
+    const approvedApplicants = await Applicant.find({
+      "prediction.isApproved": true,
+    }).populate("prediction");
 
     if (!approvedApplicants) {
       return res.status(404).json({
@@ -57,13 +59,17 @@ const applicantController = {
         status: "Error",
       });
     }
-    console.log(approvedApplicants)
+    const contactInfo = approvedApplicants.contact;
+    const predictionInfo = approvedApplicants.prediction;
 
     res.status(200).json({
       message: "Approved applicants retrieved successfully",
       status: "Success",
       data: {
-        approvedApplicants: approvedApplicants,
+        approvedApplicants: {
+          "contact": contactInfo,
+          "prediction": predictionInfo,
+        },
       },
     });
   },
@@ -86,7 +92,9 @@ const applicantController = {
     });
   },
   getRejectedApplicants: async (req, res) => {
-    const rejectedApplicants = await Applicant.find().populate("prediction");
+    const rejectedApplicants = await Applicant.find({
+      "predictions.isRejected": true,
+    }).populate("prediction");
 
     if (rejectedApplicants.length === 0) {
       return res.status(404).json({
