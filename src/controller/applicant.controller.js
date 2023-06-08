@@ -77,7 +77,7 @@ const applicantController = {
   getPendingApplicants: async (req, res) => {
     const pendingApplicants = await Applicant.find().populate("prediction");
 
-    if (!pendingApplicants) {
+    if (pendingApplicants.length === 0) {
       return res.status(404).json({
         message: "No pending applicants found",
         status: "Failed",
