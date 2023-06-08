@@ -63,7 +63,7 @@ const applicantController = {
     const predictionInfo = approvedApplicants.prediction;
 
     res.status(200).json({
-      message: "Approved applicants retrieved successfully",
+      message: "Approved applicants details retrieved successfully",
       status: "Success",
       data: {
         approvedApplicants: {
