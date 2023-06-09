@@ -1,17 +1,16 @@
+const { BadUserRequestError } = require("../error/error");
 const Applicant = require("../model/applicant.model");
-const Prediction = require("../model/prediction.model");
 const ApplicantValidator = require("../validators/applicant.validator");
 const applicantController = {
   createApplicantController: async (req, res) => {
     const { error } = ApplicantValidator.validate(req.body);
     if (error) throw error;
-
-    const newApplicant = await Applicant.create(req.body);
+    const applicant = await Applicant.create(req.body);
     res.status(201).json({
-      message: "A new applicant has been created successfully",
+      message: "Loan applicant created successfully",
       status: "Success",
       data: {
-        applicant: newApplicant,
+        applicant: applicant,
       },
     });
   },
@@ -19,7 +18,7 @@ const applicantController = {
     const applicantId = req.params.id; // Assuming the loan application ID is passed as a parameter
 
     // Retrieve the loan application document with the specified ID
-    const applicant = await Applicant.findById(applicantId).populate("contact"); // Populate the 'contact' field to fetch the associated contact details
+    const applicant = await Applicant.findById(applicantId).populate("contact");
 
     if (!applicant) {
       return res.status(404).json({ error: "Loan applicant not found" });
@@ -49,32 +48,35 @@ const applicantController = {
   },
 
   getApprovedApplicants: async (req, res) => {
-    const approvedApplicants = await Prediction.find({ isApproved: true });
+    const approvedApplicants = await Applicant.find({
+      "prediction.isApproved": true,
+    }).populate("prediction");
 
-    if (!approvedApplicants) {
-      return res.status(404).json({
-        message: "No approved applicants found",
-        status: "Error",
-      });
-    }
+    if (approvedApplicants.length === 0)
+      throw new BadUserRequestError("No approved applicants found");
+
+    const contactInfo = approvedApplicants.contact;
+    const predictionInfo = approvedApplicants.prediction;
 
     res.status(200).json({
-      message: "Approved applicants retrieved successfully",
+      message: "Approved applicants details retrieved successfully",
       status: "Success",
       data: {
-        approvedApplicants,
+        approvedApplicants: {
+          contact: contactInfo,
+          prediction: predictionInfo,
+          approvedApplicants,
+        },
       },
     });
   },
   getPendingApplicants: async (req, res) => {
-    const pendingApplicants = await Prediction.find({ isPending: true });
+    const pendingApplicants = await Applicant.find({
+      "prediction.isPending": true,
+    }).populate("prediction");
 
-    if (!pendingApplicants) {
-      return res.status(404).json({
-        message: "No pending applicants found",
-        status: "Failed",
-      });
-    }
+    if (pendingApplicants.length === 0)
+      throw new BadUserRequestError("No pending applicants found");
 
     res.status(200).json({
       message: "Pending applicants retrieved successfully",
@@ -85,20 +87,29 @@ const applicantController = {
     });
   },
   getRejectedApplicants: async (req, res) => {
-    const rejectedApplicants = await Prediction.find({ isRejected: true });
+    const rejectedApplicants = await Applicant.find({
+      "prediction.isRejected": true,
+    }).populate("prediction");
 
-    if (rejectedApplicants.length === 0) {
-      return res.status(404).json({
-        message: "No rejected applicants found",
-        status: "Failed",
-      });
-    }
+    if (!rejectedApplicants)
+      throw new BadUserRequestError("No rejected applicants found");
 
     res.status(200).json({
       message: "Rejected applicants retrieved successfully",
       status: "Success",
       data: {
         rejectedApplicants,
+      },
+    });
+  },
+  getAllApplicants: async (req, res) => {
+    const allApplicants = await Applicant.find();
+    if (!allApplicants) throw new BadUserRequestError("No applicant found");
+    res.status(200).json({
+      message: "Applicants found",
+      status: "Success",
+      data: {
+        Applicants: allApplicants,
       },
     });
   },

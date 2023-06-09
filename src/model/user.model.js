@@ -1,4 +1,5 @@
 const { mongoose } = require("mongoose");
+const userInfoSchema = require("../model/userInfo.model");
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -53,6 +54,7 @@ const userSchema = new mongoose.Schema({
   // userAgent: {
   //   type: String,
   // },
+  userInfo: userInfoSchema,
 });
 
 const User = mongoose.model("User", userSchema);

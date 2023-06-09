@@ -45,4 +45,8 @@ router.patch(
 );
 router.post("/logout", tryCatchHandler(userController.userLogoutController));
 
+// User info
+router.get("/get-user-info/:id", tryCatchHandler(userController.getUserInfo));
+router.post("/edit-user-info/:id", tryCatchHandler(userController.editUserInfo));
+
 module.exports = { userRouter: router };

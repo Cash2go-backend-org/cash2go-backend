@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const { userRouter } = require("./src/router/user.route");
 const { applicantRouter } = require("./src/router/applicant.route");
-const { predictionRouter } = require("./src/router/prediction.route");
 const config = require("./src/config/index");
 const checkInternetConnection = require("./src/error/checkInternetConnection");
 require("dotenv").config();

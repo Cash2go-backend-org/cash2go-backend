@@ -1,16 +1,11 @@
 const mongoose = require("mongoose");
+const applicantContactSchema = require("./applicantContact.model");
+const predictionSchema = require("./prediction.model");
+
 
 const ApplicantSchema = new mongoose.Schema({
-  contact: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Contact",
-    required: true,
-  },
-  prediction: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Prediction",
-    required: true,
-  },
+  contact: applicantContactSchema,
+  prediction: predictionSchema,
 });
 
 const Applicant = mongoose.model("Applicant", ApplicantSchema);

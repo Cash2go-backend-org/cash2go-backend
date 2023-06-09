@@ -31,6 +31,4 @@ const predictionSchema = new mongoose.Schema({
   isRejected: Boolean,
 });
 
-const Prediction = mongoose.model("Prediction", predictionSchema);
-
-module.exports = Prediction;
+module.exports = predictionSchema;

@@ -13,6 +13,5 @@ const applicantContactSchema = new mongoose.Schema({
   others: String,
 });
 
-const ApplicantContact = mongoose.model("Contact", applicantContactSchema);
 
-module.exports = ApplicantContact;
+module.exports = applicantContactSchema

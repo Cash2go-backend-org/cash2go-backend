@@ -4,6 +4,7 @@ const {
   userLoginValidator,
   verifyOtpValidator,
   securityQuestionandAnswerValidator,
+  infoValidator,
 } = require("../validators/user.validator");
 const { BadUserRequestError, NotFoundError } = require("../error/error");
 require("dotenv").config();
@@ -236,6 +237,49 @@ const userController = {
   userLogoutController: async (req, res) => {
     clearTokenCookie(res);
     res.status(200).json({ message: "Logout successful" });
+  },
+
+  // USER INFO
+  getUserInfo: async (req, res) => {
+    const id = req.params.id;
+
+    const user = await User.findById(id);
+
+    if (!user) throw new BadUserRequestError("user not found");
+
+    const info = user.userInfo;
+
+    res.status(200).json({
+      message: "User found successfully",
+      status: "Success",
+      userInfe: info,
+    });
+  },
+
+  editUserInfo: async (req, res) => {
+    const { error } = infoValidator.validate(req.body);
+    if (error) throw error;
+    const id = req.params.id;
+    const { firstName, lastName, email, homeAddress } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          "userInfo.firstName": firstName,
+          "userInfo.lastName": lastName,
+          "userInfo.email": email,
+          "userInfo.homeAddress": homeAddress,
+        },
+      },
+      { new: true }
+    );
+    if (!updatedUser) throw new BadUserRequestError("User not found");
+    res.status(200).json({
+      message: "User info updated successfully",
+      status: "Success",
+      updatedUser: updatedUser,
+    });
   },
 };
 
