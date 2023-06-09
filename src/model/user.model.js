@@ -1,5 +1,5 @@
 const { mongoose } = require("mongoose");
-const UserInfoSchema = require("../model/userInfo.model");
+const userInfoSchema = require("../model/userInfo.model");
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema({
   resetTokenExpiration: {
     type: String,
   },
-  userInfo: UserInfoSchema,
+  userInfo: userInfoSchema,
 });
 
 const User = mongoose.model("User", userSchema);

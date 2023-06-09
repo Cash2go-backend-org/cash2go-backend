@@ -22,4 +22,4 @@ const userInfoSchema = new mongoose.Schema({
 });
 
 
-module.exports = UserInfoSchema;
+module.exports = userInfoSchema;
