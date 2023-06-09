@@ -12,7 +12,5 @@ function globalErrorHandler(err, req, res, next) {
     message: err.message,
     status: "Failed",
   });
-
 }
-
 module.exports = globalErrorHandler;
