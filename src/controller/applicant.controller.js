@@ -1,3 +1,4 @@
+const { BadUserRequestError } = require("../error/error");
 const Applicant = require("../model/applicant.model");
 const ApplicantValidator = require("../validators/applicant.validator");
 const applicantController = {
@@ -17,7 +18,7 @@ const applicantController = {
     const applicantId = req.params.id; // Assuming the loan application ID is passed as a parameter
 
     // Retrieve the loan application document with the specified ID
-    const applicant = await Applicant.findById(applicantId).populate("contact"); 
+    const applicant = await Applicant.findById(applicantId).populate("contact");
 
     if (!applicant) {
       return res.status(404).json({ error: "Loan applicant not found" });
@@ -49,16 +50,11 @@ const applicantController = {
   getApprovedApplicants: async (req, res) => {
     const approvedApplicants = await Applicant.find({
       "prediction.isApproved": true,
-    })
-      .populate("prediction")
-      
+    }).populate("prediction");
 
-    if (approvedApplicants.length === 0) {
-      return res.status(404).json({
-        message: "No approved applicants found",
-        status: "Error",
-      });
-    }
+    if (approvedApplicants.length === 0)
+      throw new BadUserRequestError("No approved applicants found");
+
     const contactInfo = approvedApplicants.contact;
     const predictionInfo = approvedApplicants.prediction;
 
@@ -79,12 +75,8 @@ const applicantController = {
       "prediction.isPending": true,
     }).populate("prediction");
 
-    if (pendingApplicants.length === 0) {
-      return res.status(404).json({
-        message: "No pending applicants found",
-        status: "Failed",
-      });
-    }
+    if (pendingApplicants.length === 0)
+      throw new BadUserRequestError("No pending applicants found");
 
     res.status(200).json({
       message: "Pending applicants retrieved successfully",
@@ -99,18 +91,25 @@ const applicantController = {
       "prediction.isRejected": true,
     }).populate("prediction");
 
-    if (rejectedApplicants.length === 0) {
-      return res.status(404).json({
-        message: "No rejected applicants found",
-        status: "Failed",
-      });
-    }
+    if (!rejectedApplicants)
+      throw new BadUserRequestError("No rejected applicants found");
 
     res.status(200).json({
       message: "Rejected applicants retrieved successfully",
       status: "Success",
       data: {
         rejectedApplicants,
+      },
+    });
+  },
+  getAllApplicants: async (req, res) => {
+    const allApplicants = await Applicant.find();
+    if (!allApplicants) throw new BadUserRequestError("No applicant found");
+    res.status(200).json({
+      message: "Applicants found",
+      status: "Success",
+      data: {
+        Applicants: allApplicants,
       },
     });
   },

@@ -30,5 +30,9 @@ router.get(
   "/rejected-applicants",
   tryCatchHandler(applicantController.getRejectedApplicants)
 );
+router.get(
+  "/applicants",
+  tryCatchHandler(applicantController.getAllApplicants)
+);
 
 module.exports = { applicantRouter: router };
