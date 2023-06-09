@@ -42,9 +42,7 @@ const userSchema = new mongoose.Schema({
   resetTokenExpiration: {
     type: String,
   },
-  userInfo: {
-    type: UserInfo,
-  },
+  userInfo: UserInfo,
 });
 
 const User = mongoose.model("User", userSchema);
