@@ -65,6 +65,19 @@ const updatePasswordValidator = Joi.object({
     .messages({ "any.only": "Passwords does not match" }),
 });
 
+const infoValidator = Joi.object({
+  firstName: Joi.string(),
+  lastname: Joi.string(),
+  email: Joi.string(),
+  homeAddress: {
+    address: Joi.string(),
+    city: Joi.string(),
+    state: Joi.string(),
+    country: Joi.string(),
+    zipCode: Joi.number(),
+  },
+});
+
 module.exports = {
   userEmailVerification,
   verifyOtpValidator,
@@ -73,4 +86,5 @@ module.exports = {
   verifyEmailValidator,
   updatePasswordValidator,
   securityQuestionandAnswerValidator,
+  infoValidator,
 };
