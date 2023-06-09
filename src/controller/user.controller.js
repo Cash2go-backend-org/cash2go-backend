@@ -192,9 +192,9 @@ const userController = {
 
   // USER INFO
   getUserInfo: async (req, res) => {
-    const { userId } = req.params;
+    const id = req.params.id;
 
-    const user = await User.findById(userId);
+    const user = await User.findById(id);
 
     if (!user) throw new BadUserRequestError("user not found");
 
@@ -210,19 +210,25 @@ const userController = {
   editUserInfo: async (req, res) => {
     const { error } = infoValidator.validate(req.body);
     if (error) throw error;
-    const { userId } = req.params;
+    const id = req.params.id;
     const { firstName, lastName, email, homeAddress } = req.body;
 
     const updatedUser = await User.findByIdAndUpdate(
-      userId,
+      id,
       {
         "userInfo.firstName": firstName,
         "userInfo.lastName": lastName,
         "userInfo.email": email,
-        "userInfo.homeAdddress": homeAdddress,
+        "userInfo.homeAdddress": homeAddress,
       },
       { new: true }
     );
+    if (!updatedUser) throw new BadUserRequestError("User not found");
+    res.status(200).json({
+      message: "User info updated successfully",
+      status: "Success",
+      updatedUser: updatedUser,
+    });
   },
 };
 
