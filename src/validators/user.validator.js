@@ -47,6 +47,7 @@ const userLoginValidator = Joi.object({
 const securityQuestionandAnswerValidator = Joi.object({
   securityQuestion: Joi.string().required(),
   securityQuestionAnswer: Joi.string().required(),
+  securityQuestionAnswer: Joi.string().required(),
 });
 
 const verifyEmailValidator = Joi.object({
