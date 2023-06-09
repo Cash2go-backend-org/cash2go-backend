@@ -75,7 +75,9 @@ const applicantController = {
     });
   },
   getPendingApplicants: async (req, res) => {
-    const pendingApplicants = await Applicant.find().populate("prediction");
+    const pendingApplicants = await Applicant.find({
+      "prediction.isPending": true,
+    }).populate("prediction");
 
     if (pendingApplicants.length === 0) {
       return res.status(404).json({
@@ -94,7 +96,7 @@ const applicantController = {
   },
   getRejectedApplicants: async (req, res) => {
     const rejectedApplicants = await Applicant.find({
-      "predictions.isRejected": true,
+      "prediction.isRejected": true,
     }).populate("prediction");
 
     if (rejectedApplicants.length === 0) {
