@@ -1,17 +1,15 @@
 const Applicant = require("../model/applicant.model");
-const Prediction = require("../model/prediction.model");
 const ApplicantValidator = require("../validators/applicant.validator");
 const applicantController = {
   createApplicantController: async (req, res) => {
     const { error } = ApplicantValidator.validate(req.body);
     if (error) throw error;
-
-    const newApplicant = await Applicant.create(req.body);
+    const applicant = await Applicant.create(req.body);
     res.status(201).json({
-      message: "A new applicant has been created successfully",
+      message: "Loan applicant created successfully",
       status: "Success",
       data: {
-        applicant: newApplicant,
+        applicant: applicant,
       },
     });
   },
@@ -19,7 +17,7 @@ const applicantController = {
     const applicantId = req.params.id; // Assuming the loan application ID is passed as a parameter
 
     // Retrieve the loan application document with the specified ID
-    const applicant = await Applicant.findById(applicantId).populate("contact"); // Populate the 'contact' field to fetch the associated contact details
+    const applicant = await Applicant.findById(applicantId).populate("contact"); 
 
     if (!applicant) {
       return res.status(404).json({ error: "Loan applicant not found" });
@@ -51,7 +49,9 @@ const applicantController = {
   getApprovedApplicants: async (req, res) => {
     const approvedApplicants = await Applicant.find({
       "prediction.isApproved": true,
-    }).populate("prediction").populate("contact").exec();
+    })
+      .populate("prediction")
+      
 
     if (approvedApplicants.length === 0) {
       return res.status(404).json({
@@ -69,7 +69,7 @@ const applicantController = {
         approvedApplicants: {
           contact: contactInfo,
           prediction: predictionInfo,
-          approvedApplicants
+          approvedApplicants,
         },
       },
     });
