@@ -6,8 +6,9 @@ const cors = require("cors");
 const { userRouter } = require("./src/router/user.route");
 const { applicantRouter } = require("./src/router/applicant.route");
 const config = require("./src/config/index");
+const checkInternetConnection = require("./src/error/checkInternetConnection");
 require("dotenv").config();
-
+// const useragent = require("express-useragent");
 // Database connection
 const mongoURI = config.MONGODB_CONNECTION_URL;
 
@@ -19,9 +20,13 @@ const port = config.PORT;
 const app = express();
 
 // Middleware
+// app.use(useragent.express());
 app.use(morgan("tiny"));
 app.use(express.json());
 app.use(cors());
+
+//check internet connection
+app.use(checkInternetConnection);
 
 // Routes
 app.use("/api/v1/user", userRouter);

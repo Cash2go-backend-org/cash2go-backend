@@ -42,6 +42,18 @@ const userSchema = new mongoose.Schema({
   resetTokenExpiration: {
     type: String,
   },
+  device: {
+    type: String,
+  },
+  ip: {
+    type: String,
+  },
+  location: {
+    type: String,
+  },
+  // userAgent: {
+  //   type: String,
+  // },
   userInfo: userInfoSchema,
 });
 

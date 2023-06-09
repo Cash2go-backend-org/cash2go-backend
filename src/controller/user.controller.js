@@ -17,6 +17,8 @@ const { generateToken } = require("../utils/jwt.utils");
 
 //opeyemi
 const { clearTokenCookie } = require("../utils/jwt.utils");
+const useragent = require("express-useragent");
+const geoip = require("geoip-lite");
 
 // mailer
 const transporter = nodemailer.createTransport(mailerConfig);
@@ -36,6 +38,13 @@ const userController = {
     const companyIDExists = await User.find({ companyID });
     if (companyIDExists.length > 0)
       throw new BadUserRequestError("An account with this company ID exists");
+
+    // Check internet connection
+    if (!navigator.onLine) {
+      throw new Error(
+        "No internet connection. Please check your network settings."
+      );
+    }
 
     // Generate OTP
     const otp = Math.floor(Math.random() * 8888 + 1000);
@@ -113,12 +122,22 @@ const userController = {
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
     const hashedConfirmPassword = bcrypt.hashSync(confirmPassword, saltRounds);
 
+    // Get device and IP information
+    const device = useragent.parse(req.headers["user-agent"]);
+    const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+    const location = geoip.lookup(ip);
+
     const newUser = await User.updateOne(
       { email: email, isVerified: true },
       {
         username: username,
         password: hashedPassword,
         confirmPassword: hashedConfirmPassword,
+        device: device.source,
+        ip: ip,
+        location: location
+          ? `${location.country}, ${location.city}`
+          : "Unknown",
       }
     );
     res.status(201).json({
@@ -162,6 +181,36 @@ const userController = {
     if (!user) throw new BadUserRequestError("Incorrect email");
     const hash = bcrypt.compareSync(req.body.password, user.password);
     if (!hash) throw new BadUserRequestError("incorrect password");
+
+    // Get user agent and IP information
+    const device = useragent.parse(req.headers["user-agent"]);
+    const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+    const location = geoip.lookup(ip);
+
+    // Check if user's device or location has changed
+    const previousDevice = user.device || "";
+    const previousLocation = user.location || "";
+
+    if (previousDevice !== device.source || previousLocation !== location) {
+      // Send email notification about login attempt from different device, IP, or location
+      await transporter.sendMail({
+        from: "hembee999@gmail.com",
+        to: user.email,
+        subject: "New Login Notification",
+        html: `<p>A new login was detected for your account.</p>
+           <p>Device: ${device.source}</p>
+           <p>Location: ${location}</p>`,
+      });
+    }
+
+    // Update user information with current device and location details
+    user.device = device.source;
+    user.ip = ip;
+    user.location = location
+      ? `${location.country}, ${location.city}`
+      : "Unknown";
+    await user.save();
+
     res.status(200).json({
       message: "User login successful",
       status: "Success",

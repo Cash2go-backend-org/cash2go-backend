@@ -31,11 +31,17 @@ const userSignupValidator = Joi.object({
     .valid(Joi.ref("password"))
     .required()
     .messages({ "any.only": "Passwords do not match" }),
+  device: Joi.string().optional(),
+  ip: Joi.string().optional(),
+  location: Joi.string().optional(),
 }).strict();
 
 const userLoginValidator = Joi.object({
   email: Joi.string().required().email(),
   password: Joi.string().required(),
+  device: Joi.string().optional(),
+  ip: Joi.string().optional(),
+  location: Joi.string().optional(),
 });
 
 const securityQuestionandAnswerValidator = Joi.object({
