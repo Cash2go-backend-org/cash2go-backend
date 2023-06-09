@@ -67,7 +67,7 @@ const updatePasswordValidator = Joi.object({
 
 const infoValidator = Joi.object({
   firstName: Joi.string(),
-  lastname: Joi.string(),
+  lastName: Joi.string(),
   email: Joi.string(),
   homeAddress: {
     address: Joi.string(),

@@ -216,10 +216,12 @@ const userController = {
     const updatedUser = await User.findByIdAndUpdate(
       id,
       {
-        "userInfo.firstName": firstName,
-        "userInfo.lastName": lastName,
-        "userInfo.email": email,
-        "userInfo.homeAdddress": homeAddress,
+        $set: {
+          "userInfo.firstName": firstName,
+          "userInfo.lastName": lastName,
+          "userInfo.email": email,
+          "userInfo.homeAddress": homeAddress,
+        },
       },
       { new: true }
     );
