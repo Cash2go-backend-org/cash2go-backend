@@ -47,88 +47,92 @@
     <p>Backend APi</p>
     <p>Stutern cohort 1.4 <br />Group 2 Team 2</p>
     <br />
-    <h4>API Documentation:</h4>
-    <br />
-    <h5>User Endpoints:</h5>
-    <h5>https://cash2go-backendd.onrender.com/api/v1/user</h5>
-    <br />
-    <p>
-      <strong>POST /send-otp:</strong> Sends an OTP verification email to the
-      specified email address.
-    </p>
-    <p>
-      <strong>PATCH /resend-otp:</strong> Resends an OTP verification email to
-      the specified email address.
-    </p>
-    <p>
-      <strong>PATCH /signup:</strong> Creates/Updates a new user account with
-      the provided details.
-    </p>
-    <p>
-      <strong>PATCH /verify-otp:</strong> Verifies the OTP sent to the user's
-      email address.
-    </p>
-    <p>
-      <strong>PATCH /security-question:</strong> Saves the security question and
-      answer for the user.
-    </p>
-    <p>
-      <strong>POST /login:</strong> Logs in the user with the provided email and
-      password.
-    </p>
-    <p><strong>GET /search:</strong> Searches for a user by their username.</p>
-    <p><strong>POST /logout:</strong> Logs out the user.</p>
-    <p>
-      <strong>GET /get-user-info/:id:</strong> Retrieves the user information
-      for the specified user ID.
-    </p>
-    <p>
-      <strong>POST /edit-user-info/:id:</strong> Edits the user information for
-      the specified user ID.
-    </p>
-    <p>
-      <strong>POST /verify-email:</strong> Verifies the user's email address
-      before initiating password reset.
-    </p>
-    <p>
-      <strong>GET /get-security-question:</strong> Get the security question for
-      password reset.
-    </p>
-    <p>
-      <strong>PATCH /reset-password:</strong> Verifies the user’s answer to the
-      security question and sends a reset token.
-    </p>
-    <p>
-      <strong>POST /update-password/:token:</strong> Update the user's password
-      using a reset token.
-    </p>
-    <br />
-    <h5>Applicant Endpoints:</h5>
-    <h5>https://cash2go-backendd.onrender.com/api/v1/applicant</h5>
-    <br />
-    <p>
-      <strong>GET /contact/:id:</strong> Retrieves the contact information for
-      the specified applicant ID.
-    </p>
-    <p>
-      <strong>GET /prediction/:id:</strong> Retrieves the prediction information
-      for the specified applicant ID.
-    </p>
-    <p>
-      <strong>GET /approved-applicants:</strong> Retrieves the list of approved
-      applicants.
-    </p>
-    <p>
-      <strong>GET /pending-applicants:</strong> Retrieves the list of pending
-      applicants.
-    </p>
-    <p>
-      <strong>GET /rejected-applicants:</strong> Retrieves the list of rejected
-      applicants.
-    </p>
-    <p>
-      <strong>GET /applicants:</strong> Retrieves the list of all applicants.
-    </p>
+    <div class="doc">
+      <h4>API Documentation:</h4>
+      <br />
+      <h5>User Endpoints:</h5>
+      <h5>https://cash2go-backendd.onrender.com/api/v1/user</h5>
+      <br />
+      <p>
+        <strong>POST /send-otp:</strong> Sends an OTP verification email to the
+        specified email address.
+      </p>
+      <p>
+        <strong>PATCH /resend-otp:</strong> Resends an OTP verification email to
+        the specified email address.
+      </p>
+      <p>
+        <strong>PATCH /signup:</strong> Creates/Updates a new user account with
+        the provided details.
+      </p>
+      <p>
+        <strong>PATCH /verify-otp:</strong> Verifies the OTP sent to the user's
+        email address.
+      </p>
+      <p>
+        <strong>PATCH /security-question:</strong> Saves the security question
+        and answer for the user.
+      </p>
+      <p>
+        <strong>POST /login:</strong> Logs in the user with the provided email
+        and password.
+      </p>
+      <p>
+        <strong>GET /search:</strong> Searches for a user by their username.
+      </p>
+      <p><strong>POST /logout:</strong> Logs out the user.</p>
+      <p>
+        <strong>GET /get-user-info/:id:</strong> Retrieves the user information
+        for the specified user ID.
+      </p>
+      <p>
+        <strong>POST /edit-user-info/:id:</strong> Edits the user information
+        for the specified user ID.
+      </p>
+      <p>
+        <strong>POST /verify-email:</strong> Verifies the user's email address
+        before initiating password reset.
+      </p>
+      <p>
+        <strong>GET /get-security-question:</strong> Get the security question
+        for password reset.
+      </p>
+      <p>
+        <strong>PATCH /reset-password:</strong> Verifies the user’s answer to
+        the security question and sends a reset token.
+      </p>
+      <p>
+        <strong>POST /update-password/:token:</strong> Update the user's
+        password using a reset token.
+      </p>
+      <br />
+      <h5>Applicant Endpoints:</h5>
+      <h5>https://cash2go-backendd.onrender.com/api/v1/applicant</h5>
+      <br />
+      <p>
+        <strong>GET /contact/:id:</strong> Retrieves the contact information for
+        the specified applicant ID.
+      </p>
+      <p>
+        <strong>GET /prediction/:id:</strong> Retrieves the prediction
+        information for the specified applicant ID.
+      </p>
+      <p>
+        <strong>GET /approved-applicants:</strong> Retrieves the list of
+        approved applicants.
+      </p>
+      <p>
+        <strong>GET /pending-applicants:</strong> Retrieves the list of pending
+        applicants.
+      </p>
+      <p>
+        <strong>GET /rejected-applicants:</strong> Retrieves the list of
+        rejected applicants.
+      </p>
+      <p>
+        <strong>GET /applicants:</strong> Retrieves the list of all applicants.
+      </p>
+    </div>
     <footer>Made with ❤ by Anthony and Opeyemi</footer>
   </body>
 </html>
