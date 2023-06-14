@@ -60,6 +60,7 @@ const userController = {
     const { email } = req.query;
     // Generate new OTP
     const newOtp = Math.floor(Math.random() * 8888 + 1000);
+    
     // Resend OTP email
     await transporter.sendMail({
       from: "hembee999@gmail.com",
