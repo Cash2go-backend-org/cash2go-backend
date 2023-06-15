@@ -40,7 +40,6 @@ router.patch(
 );
 router.patch(
   "/update-password/:token",
-  // userAuthMiddleWare,
   tryCatchHandler(passwordController.updatePasswordController)
 );
 router.post("/logout", tryCatchHandler(userController.userLogoutController));
