@@ -20,7 +20,6 @@ router.patch(
 router.post("/login", tryCatchHandler(userController.userLoginController));
 router.get(
   "/search",
-  // userAuthMiddleWare,
   tryCatchHandler(userController.searchUser)
 );
 
