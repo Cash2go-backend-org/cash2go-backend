@@ -20,7 +20,6 @@ router.patch(
 router.post("/login", tryCatchHandler(userController.userLoginController));
 router.get(
   "/search",
-  // userAuthMiddleWare,
   tryCatchHandler(userController.searchUser)
 );
 
@@ -40,7 +39,6 @@ router.patch(
 );
 router.patch(
   "/update-password/:token",
-  // userAuthMiddleWare,
   tryCatchHandler(passwordController.updatePasswordController)
 );
 router.post("/logout", tryCatchHandler(userController.userLogoutController));
