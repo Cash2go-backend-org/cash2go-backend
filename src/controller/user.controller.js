@@ -274,6 +274,7 @@ const userController = {
       updatedUser: updatedUser,
     });
   },
+  // Messages
 };
 
 module.exports = userController;
