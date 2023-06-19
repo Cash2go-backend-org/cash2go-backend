@@ -39,13 +39,6 @@ const userController = {
     if (companyIDExists.length > 0)
       throw new BadUserRequestError("An account with this company ID exists");
 
-    // Check internet connection
-    if (!navigator.onLine) {
-      throw new Error(
-        "No internet connection. Please check your network settings."
-      );
-    }
-
     // Generate OTP
     const otp = Math.floor(Math.random() * 8888 + 1000);
     // Send OTP email
@@ -74,7 +67,6 @@ const userController = {
       html: `<p>Use OTP <b>${newOtp}</b> to verify your email</p>`,
     });
     const update = { $set: { otp: newOtp } };
-
     const user = await User.updateOne({ email: email }, update);
 
     res.status(200).json({

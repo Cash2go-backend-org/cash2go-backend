@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const { userRouter } = require("./src/router/user.route");
 const { applicantRouter } = require("./src/router/applicant.route");
+const { messagingRouter } = require("./src/router/messaging.route");
 const config = require("./src/config/index");
 const checkInternetConnection = require("./src/error/checkInternetConnection");
 require("dotenv").config();
@@ -31,6 +32,7 @@ app.use(checkInternetConnection);
 // Routes
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/applicant", applicantRouter);
+app.use("/api/v1/messaging", messagingRouter);
 app.use(
   cors({
     origin: "http://localhost:3000",
