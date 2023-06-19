@@ -1,24 +1,12 @@
 const { messagingValidator } = require("../validators/messaging.validator");
-const { BadUserRequestError, NotFoundError } = require("../error/error");
+const { BadUserRequestError } = require("../error/error");
 require("dotenv").config();
 const User = require("../model/user.model");
 const Messaging = require("../model/messaging.model");
 const nodemailer = require("nodemailer");
 const mailerConfig = require("../config/mailer");
-
-// mailer
 const transporter = nodemailer.createTransport(mailerConfig);
 
-// const { error } = ApplicantValidator.validate(req.body);
-// if (error) throw error;
-// const applicant = await Messaging.create(req.body);
-// res.status(201).json({
-//   message: "Loan applicant created successfully",
-//   status: "Success",
-//   data: {
-//     applicant: applicant,
-//   },
-// });
 const messagingController = {
   sendMessage: async (req, res) => {
     const { error } = messagingValidator.validate(req.body);
