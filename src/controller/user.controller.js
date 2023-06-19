@@ -69,7 +69,6 @@ const userController = {
       html: `<p>Use OTP <b>${newOtp}</b> to verify your email</p>`,
     });
     const update = { $set: { otp: newOtp } };
-
     const user = await User.updateOne({ email: email }, update);
 
     res.status(200).json({
