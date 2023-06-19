@@ -29,6 +29,15 @@ const messagingController = {
       },
     });
   },
+  getMessages: async (req, res) => {
+    const messages = await Messaging.find();
+    if (!messages) throw new BadUserRequestError("No message found");
+    res.status(200).json({
+      status: "success",
+      message: "Messages found successfully",
+      messages: messages,
+    });
+  },
 };
 
 module.exports = messagingController;
