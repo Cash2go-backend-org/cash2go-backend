@@ -23,7 +23,7 @@ router.get(
   tryCatchHandler(userController.searchUser)
 );
 router.get(
-  "/get-firstName",
+  "/get-firstname",
   tryCatchHandler(userController.getUserFirstName)
 );
 
