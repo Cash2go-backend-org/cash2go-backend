@@ -22,6 +22,10 @@ router.get(
   "/search",
   tryCatchHandler(userController.searchUser)
 );
+router.get(
+  "/get-firstName",
+  tryCatchHandler(userController.getUserFirstName)
+);
 
 //opeyemi
 router.post(

@@ -17,7 +17,8 @@ const userSignupValidator = Joi.object({
   // }),
   // companyID: Joi.number().required(),
   // otp: Joi.number(),
-  username: Joi.string().required(),
+  firstName: Joi.string().required(),
+  lastName: Joi.string().required(),
   password: Joi.string()
     .min(8)
     .required()

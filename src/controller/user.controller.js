@@ -41,7 +41,7 @@ const userController = {
 
     // Generate OTP
     const otp = Math.floor(Math.random() * 8888 + 1000);
-    
+
     // Send OTP email
     await transporter.sendMail({
       from: "hembee999@gmail.com",
@@ -60,7 +60,7 @@ const userController = {
     const { email } = req.query;
     // Generate new OTP
     const newOtp = Math.floor(Math.random() * 8888 + 1000);
-    
+
     // Resend OTP email
     await transporter.sendMail({
       from: "hembee999@gmail.com",
@@ -98,13 +98,13 @@ const userController = {
   userSignupController: async (req, res) => {
     const { error } = userSignupValidator.validate(req.body);
     if (error) throw error;
-    const usernameExists = await User.find({ username: req.body.username });
-    if (usernameExists.length > 0)
-      throw new BadUserRequestError(
-        "An account with this username already exists."
-      );
+    // const usernameExists = await User.find({ username: req.body.username });
+    // if (usernameExists.length > 0)
+    //   throw new BadUserRequestError(
+    //     "An account with this username already exists."
+    //   );
 
-    const { username, password, confirmPassword } = req.body;
+    const { firstName, lastName, password, confirmPassword } = req.body;
     const { email } = req.query;
     const checkIfVerified = await User.findOne({
       email: email,
@@ -124,7 +124,8 @@ const userController = {
     const newUser = await User.updateOne(
       { email: email, isVerified: true },
       {
-        username: username,
+        firstName: firstName,
+        lastName: lastName,
         password: hashedPassword,
         confirmPassword: hashedConfirmPassword,
         device: device.source,
@@ -227,6 +228,20 @@ const userController = {
       },
     });
   },
+
+  getUserFirstName: async (req, res) => {
+    const user = await User.findOne({ username: req.query?.username });
+    if (!user) throw new NotFoundError("User not found");
+
+    res.status(200).json({
+      message: "User found successfully",
+      status: "Success",
+      data: {
+        firstName: user.firstName,
+      },
+    });
+  },
+
   //opeyemi
   userLogoutController: async (req, res) => {
     clearTokenCookie(res);
