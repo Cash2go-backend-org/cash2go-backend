@@ -217,7 +217,7 @@ const userController = {
   },
 
   searchUser: async (req, res) => {
-    const user = await User.findOne({ firstName: req.query?.firstName });
+    const user = await User.find({ firstName: req.query?.firstName });
     if (!user) throw new NotFoundError("User not found");
 
     res.status(200).json({
