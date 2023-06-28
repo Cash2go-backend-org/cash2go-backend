@@ -242,6 +242,21 @@ const userController = {
     });
   },
 
+  getUserFirstNameAndLastName: async (req, res) => {
+    const user = await User.findOne({ email: req.query?.email });
+    if (!user) throw new NotFoundError("User not found");
+    const firstName = user.firstName;
+    const lastName = user.lastName;
+
+    res.status(200).json({
+      message: "User found successfully",
+      status: "Success",
+      data: {
+        name: firstName + " " + lastName,
+      },
+    });
+  },
+
   //opeyemi
   userLogoutController: async (req, res) => {
     clearTokenCookie(res);
