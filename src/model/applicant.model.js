@@ -20,9 +20,7 @@ const ApplicantSchema = new mongoose.Schema({
 });
 
 ApplicantSchema.pre("save", function (next) {
-  if (!this.applicationID) {
     this.applicationID = Math.floor(Math.random() * 900000000 + 100000000);
-  }
   // this.applicationDate = moment(this.applicationDate).format("DD/MM/YY");
 
   next();
