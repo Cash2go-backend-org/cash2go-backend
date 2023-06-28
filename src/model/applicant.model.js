@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const moment = require('moment');
+const moment = require("moment");
 const applicantContactSchema = require("./applicantContact.model");
 const predictionSchema = require("./prediction.model");
 
@@ -9,6 +9,7 @@ const ApplicantSchema = new mongoose.Schema({
   applicationDate: {
     type: Date,
     default: Date.now,
+    get: (date) => moment(date).format("DD/MM/YY"),
   },
   applicationID: {
     type: Number,
@@ -22,7 +23,7 @@ ApplicantSchema.pre("save", function (next) {
   if (!this.applicationID) {
     this.applicationID = Math.floor(Math.random() * 900000000 + 100000000);
   }
-  this.applicationDate = moment(this.applicationDate).format("DD/MM/YY");
+  // this.applicationDate = moment(this.applicationDate).format("DD/MM/YY");
 
   next();
 });
