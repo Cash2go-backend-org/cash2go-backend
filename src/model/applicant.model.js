@@ -12,7 +12,6 @@ const ApplicantSchema = new mongoose.Schema({
   applicationID: {
     type: Number,
     unique: true,
-    required: true,
     min: 100000000,
     max: 999999999,
   },
