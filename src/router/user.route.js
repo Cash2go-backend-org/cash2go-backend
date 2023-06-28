@@ -28,7 +28,7 @@ router.get(
 );
 router.get(
   "/get-firstnameandlastname",
-  tryCatchHandler(userController.getUserFirstName)
+  tryCatchHandler(userController.getUserFirstNameAndLastName)
 );
 
 //opeyemi
