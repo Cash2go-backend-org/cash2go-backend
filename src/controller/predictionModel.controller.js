@@ -16,5 +16,16 @@ const modelController = {
       },
     });
   },
+  getAllModels: async (req, res) => {
+    const models = await Model.find();
+    if (!models) throw new BadUserRequestError("no model found");
+    res.status(200).json({
+      status: "success",
+      message: "Models found successfully",
+      data: {
+        models: models,
+      },
+    });
+  },
 };
 module.exports = modelController;
