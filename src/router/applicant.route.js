@@ -39,5 +39,6 @@ router.get(
 // prediction model
 
 router.post("/new-model", modelController.createModelController);
+router.get("/get-models", modelController.getAllModels);
 
 module.exports = { applicantRouter: router };
