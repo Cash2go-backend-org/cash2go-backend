@@ -1,6 +1,7 @@
 const express = require("express");
 const tryCatchHandler = require("../utils/tryCatchHandler");
 const applicantController = require("../controller/applicant.controller");
+const modelController = require("../controller/predictionModel.controller");
 
 const router = new express.Router();
 
@@ -34,5 +35,9 @@ router.get(
   "/applicants",
   tryCatchHandler(applicantController.getAllApplicants)
 );
+
+// prediction model
+
+router, post("/new-model", modelController.createModelController);
 
 module.exports = { applicantRouter: router };
