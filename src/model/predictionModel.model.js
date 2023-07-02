@@ -5,15 +5,15 @@ const ModelSchema = new mongoose.Schema({
   modelDescription: String,
   creditScore: {
     operator: String,
-    value: String,
+    value: Number,
   },
-  creditToCreditRatio: {
+  annualIncome: {
     operator: String,
-    value: String,
+    value: Number,
   },
-  creditBalance: {
+  guarantorsCreditScore: {
     operator: String,
-    value: String,
+    value: Number,
   },
   allConditions: Boolean,
   anyCondition: Boolean,
