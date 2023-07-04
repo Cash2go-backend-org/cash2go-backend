@@ -26,7 +26,7 @@ app.use(morgan("tiny"));
 app.use(express.json());
 app.use(cors());
 
-//check internet connectionnn
+//check internet connection
 app.use(checkInternetConnection);
 
 // Routes
