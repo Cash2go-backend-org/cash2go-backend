@@ -19,6 +19,24 @@ const ModelSchema = new mongoose.Schema({
   anyCondition: Boolean,
 });
 
+// const NewApplicationPredictionSchema = new mongoose.Schema({
+//   creditScore: {
+//     value: Number,
+//   },
+//   annualIncome: {
+//     value: Number,
+//   },
+//   guarantorsCreditScore: {
+//     value: Number,
+//   },
+//   allConditions: Boolean,
+//   anyCondition: Boolean,
+// });
+
+// const Prediction = mongoose.model("Prediction", NewApplicationPredictionSchema);
 const Model = mongoose.model("Model", ModelSchema);
 
-module.exports = Model;
+module.exports = {
+  // Prediction,
+  Model,
+};

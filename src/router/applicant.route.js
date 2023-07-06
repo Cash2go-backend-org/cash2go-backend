@@ -41,4 +41,6 @@ router.get(
 router.post("/new-model", modelController.createModelController);
 router.get("/get-models", modelController.getAllModels);
 
+router.get("/new-prediction", modelController.createNewPredictionController);
+
 module.exports = { applicantRouter: router };
