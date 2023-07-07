@@ -1,6 +1,9 @@
 const Model = require("../model/predictionModel.model");
-const modelValidator = require("../validators/predictionModel.validator");
-const predictionValidator = require("../validators/predictionModel.validator");
+const {
+  modelValidator,
+  predictionValidator,
+} = require("../validators/predictionModel.validator");
+// const predictionValidator = require("../validators/predictionModel.validator");
 const { BadUserRequestError } = require("../error/error");
 
 const modelController = {

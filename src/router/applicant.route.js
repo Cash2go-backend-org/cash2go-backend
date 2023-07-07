@@ -3,6 +3,8 @@ const tryCatchHandler = require("../utils/tryCatchHandler");
 const applicantController = require("../controller/applicant.controller");
 const modelController = require("../controller/predictionModel.controller");
 
+//new
+
 const router = new express.Router();
 
 // Mubarak
@@ -41,6 +43,16 @@ router.get(
 router.post("/new-model", modelController.createModelController);
 router.get("/get-models", modelController.getAllModels);
 
-router.get("/new-prediction", modelController.createNewPredictionController);
+router.patch("/new-prediction", modelController.createNewPredictionController);
+
+//new
+router.post(
+  "/create-applicant-contact",
+  tryCatchHandler(applicantController.createApplicantContactController)
+);
+router.patch(
+  "/create-new-prediction",
+  tryCatchHandler(applicantController.createNewPredictionController)
+);
 
 module.exports = { applicantRouter: router };

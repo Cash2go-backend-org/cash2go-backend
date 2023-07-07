@@ -36,7 +36,4 @@ const ModelSchema = new mongoose.Schema({
 // const Prediction = mongoose.model("Prediction", NewApplicationPredictionSchema);
 const Model = mongoose.model("Model", ModelSchema);
 
-module.exports = {
-  // Prediction,
-  Model,
-};
+module.exports = Model;
