@@ -6,7 +6,6 @@ const messagingSchema = new mongoose.Schema({
     required: true,
     unique: false,
     lowercase: true,
-    immutable: true,
     validators: {
       match: [
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
