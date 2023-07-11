@@ -3,8 +3,6 @@ const { mongoose } = require("mongoose");
 const messagingSchema = new mongoose.Schema({
   email: {
     type: String,
-    required: true,
-    lowercase: true,
     validators: {
       match: [
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
