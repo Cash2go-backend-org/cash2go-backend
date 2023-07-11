@@ -12,8 +12,9 @@ const messagingController = {
     const { error } = messagingValidator.validate(req.body);
     if (error) throw error;
     const { email, title, body } = req.body;
-
-    const userMessage = await Messaging.create({ email, title, body });
+    const user = await User.findOne({ email });
+    if (!user) throw new BadUserRequestError("User not found");
+    const userMessage = await Messaging.create(req.body);
     await transporter.sendMail({
       from: "hembee999@gmail.com",
       to: email,
