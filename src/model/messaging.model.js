@@ -1,12 +1,18 @@
 const { mongoose } = require("mongoose");
 
 const messagingSchema = new mongoose.Schema({
-   email: {
+  email: {
     type: String,
-    match: [
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-      "Please add a valid email string to the email path.",
-    ],
+    required: true,
+    unique: false,
+    lowercase: true,
+    immutable: true,
+    validators: {
+      match: [
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+        "Please add a valid email string to the email path.",
+      ],
+    },
   },
   title: {
     type: String,
