@@ -4,7 +4,13 @@ const applicantContactSchema = require("./applicantContact.model");
 const newPredictionSchema = require("./newPrediction");
 const ApplicantSchema = new mongoose.Schema({
   contact: applicantContactSchema,
-  prediction: newPredictionSchema,
+  prediction: {
+    type: newPredictionSchema,
+    default: {
+      isApproved: false,
+      isRejected: false,
+    },
+  },
   applicationDate: {
     type: Date,
     default: Date.now,

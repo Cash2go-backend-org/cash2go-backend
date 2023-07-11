@@ -18,6 +18,8 @@ const newPredictionSchema = new mongoose.Schema({
   },
   allConditions: Boolean,
   anyCondition: Boolean,
+  isApproved: Boolean,
+  isRejected: Boolean,
 });
 
 module.exports = newPredictionSchema;

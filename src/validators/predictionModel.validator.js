@@ -19,19 +19,6 @@ const modelValidator = Joi.object({
   anyCondition: Joi.boolean(),
 });
 
-const predictionValidator = Joi.object({
-  creditScore: Joi.object({
-    value: Joi.number(),
-  }),
-  annualIncome: Joi.object({
-    value: Joi.number(),
-  }),
-  guarantorsCreditScore: Joi.object({
-    value: Joi.number(),
-  }),
-});
-
 module.exports = {
   modelValidator,
-  predictionValidator,
 };
