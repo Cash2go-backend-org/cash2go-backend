@@ -1,17 +1,30 @@
 const mongoose = require("mongoose");
 
 const applicantContactSchema = new mongoose.Schema({
-  firstName: String,
-  lastName: String,
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
   gender: String,
   DOB: String,
   address: String,
   stateOfOrigin: String,
-  adressOfEmployer: String,
-  phoneNumber: Number,
+  addressOfEmployer: String,
+  phoneNumber: {
+    type: Number,
+    required: true,
+    unique: true,
+  },
   nextOfKinPhoneNumber: Number,
   others: String,
 });
 
+module.exports = applicantContactSchema;
 
-module.exports = applicantContactSchema
+// const Contact = mongoose.model("Contact", applicantContactSchema);
+
+// module.exports = Contact;

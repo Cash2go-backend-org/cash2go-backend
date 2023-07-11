@@ -7,16 +7,18 @@ const modelValidator = Joi.object({
     operator: Joi.string(),
     value: Joi.string(),
   }),
-  creditToCreditRatio: Joi.object({
+  annualIncome: Joi.object({
     operator: Joi.string(),
-    value: Joi.string(),
+    value: Joi.number(),
   }),
-  creditBalance: Joi.object({
+  guarantorsCreditScore: Joi.object({
     operator: Joi.string(),
-    value: Joi.string(),
+    value: Joi.number(),
   }),
   allConditions: Joi.boolean(),
   anyCondition: Joi.boolean(),
 });
 
-module.exports = modelValidator;
+module.exports = {
+  modelValidator,
+};

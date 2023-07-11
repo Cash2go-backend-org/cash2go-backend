@@ -1,19 +1,123 @@
 const { BadUserRequestError } = require("../error/error");
 const Applicant = require("../model/applicant.model");
-const ApplicantValidator = require("../validators/applicant.validator");
+const Model = require("../model/predictionModel.model");
+// const ApplicantValidator = require("../validators/applicant.validator");
+const {
+  contactValidator,
+  newPredictionValidator,
+} = require("../validators/applicant.validator");
+
 const applicantController = {
-  createApplicantController: async (req, res) => {
-    const { error } = ApplicantValidator.validate(req.body);
+  createApplicantContactController: async (req, res) => {
+    const { error } = contactValidator.validate(req.body);
     if (error) throw error;
-    const applicant = await Applicant.create(req.body);
+
+    const contact = ({
+      firstName,
+      lastName,
+      gender,
+      DOB,
+      address,
+      stateOfOrigin,
+      addressOfEmployer,
+      phoneNumber,
+      nextOfKinPhoneNumber,
+      others,
+    } = req.body);
+
+    // Check if applicant with the same phoneNumber already exists
+    const existingApplicant = await Applicant.findOne({
+      "contact.phoneNumber": phoneNumber,
+    });
+    if (existingApplicant) {
+      return res.status(409).json({
+        message: "An applicant with the same phone number already exists",
+        status: "Failed",
+      });
+    }
+
+    const newApplicant = new Applicant({
+      contact,
+    });
+
+    // Save the new applicant to the database
+    await newApplicant.save();
+
     res.status(201).json({
-      message: "Loan applicant created successfully",
+      message: "Applicant contact created successfully",
       status: "Success",
       data: {
-        applicant: applicant,
+        id: newApplicant._id,
+        contact,
       },
     });
   },
+
+  createNewPredictionController: async (req, res) => {
+    const { error } = newPredictionValidator.validate(req.body);
+    if (error) throw error;
+
+    const models = await Model.find();
+    if (!models || models.length === 0) {
+      throw new BadUserRequestError("No prediction models found");
+    }
+
+    const { applicantId } = req.params;
+    const { creditScore, annualIncome, guarantorsCreditScore } = req.body;
+
+    let eligible = true;
+
+    for (const model of models) {
+      const {
+        creditScore: modelCreditScore,
+        annualIncome: modelAnnualIncome,
+        guarantorsCreditScore: modelGuarantorsCreditScore,
+      } = model;
+
+      if (
+        creditScore.value < modelCreditScore.value ||
+        annualIncome.value < modelAnnualIncome.value ||
+        guarantorsCreditScore.value < modelGuarantorsCreditScore.value
+      ) {
+        eligible = false;
+        break;
+      }
+    }
+
+    try {
+      const applicant = await Applicant.findById(applicantId);
+      if (!applicant) {
+        throw new BadUserRequestError("Applicant not found");
+      }
+
+      let loanStatus;
+
+      if (eligible) {
+        applicant.prediction.isApproved = true;
+        applicant.prediction.isRejected = false;
+        await applicant.save();
+        loanStatus = "Approved";
+      } else {
+        applicant.prediction.isApproved = false;
+        applicant.prediction.isRejected = true;
+        await applicant.save();
+        loanStatus = "Rejected";
+      }
+
+      res.status(200).json({
+        status: "success",
+        message: "Loan prediction completed",
+        data: {
+          // applicantId,
+          loanStatus,
+          applicant,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
+
   getApplicantContact: async (req, res) => {
     const applicantId = req.params.id; // Assuming the loan application ID is passed as a parameter
 
@@ -29,70 +133,33 @@ const applicantController = {
 
     res.status(200).json({ "contact info": contact });
   },
-  getApplicantPrediction: async (req, res) => {
-    const applicantId = req.params.id; // Assuming the loan application ID is passed as a parameter
-
-    // Retrieve the loan application document with the specified ID
-    const applicant = await Applicant.findById(applicantId).populate(
-      "prediction"
-    ); // Populate the 'contact' field to fetch the associated prediction details
-
-    if (!applicant) {
-      return res.status(404).json({ error: "applicant not found" });
-    }
-
-    // Extract the prediction details from the application document
-    const prediction = applicant.prediction;
-
-    res.status(200).json({ "prediction info": prediction });
-  },
 
   getApprovedApplicants: async (req, res) => {
     const approvedApplicants = await Applicant.find({
       "prediction.isApproved": true,
-    }).populate("prediction");
+    }).populate("contact");
 
-    if (approvedApplicants.length === 0)
+    if (approvedApplicants.length === 0) {
       throw new BadUserRequestError("No approved applicants found");
-
-    const contactInfo = approvedApplicants.contact;
-    const predictionInfo = approvedApplicants.prediction;
+    }
 
     res.status(200).json({
       message: "Approved applicants details retrieved successfully",
       status: "Success",
       data: {
-        approvedApplicants: {
-          contact: contactInfo,
-          prediction: predictionInfo,
-          approvedApplicants,
-        },
+        approvedApplicants,
       },
     });
   },
-  getPendingApplicants: async (req, res) => {
-    const pendingApplicants = await Applicant.find({
-      "prediction.isPending": true,
-    }).populate("prediction");
 
-    if (pendingApplicants.length === 0)
-      throw new BadUserRequestError("No pending applicants found");
-
-    res.status(200).json({
-      message: "Pending applicants retrieved successfully",
-      status: "Success",
-      data: {
-        pendingApplicants,
-      },
-    });
-  },
   getRejectedApplicants: async (req, res) => {
     const rejectedApplicants = await Applicant.find({
       "prediction.isRejected": true,
-    }).populate("prediction");
+    }).populate("contact");
 
-    if (!rejectedApplicants)
+    if (rejectedApplicants.length === 0) {
       throw new BadUserRequestError("No rejected applicants found");
+    }
 
     res.status(200).json({
       message: "Rejected applicants retrieved successfully",
@@ -102,16 +169,71 @@ const applicantController = {
       },
     });
   },
+
   getAllApplicants: async (req, res) => {
-    const allApplicants = await Applicant.find();
-    if (!allApplicants) throw new BadUserRequestError("No applicant found");
-    res.status(200).json({
-      message: "Applicants found",
-      status: "Success",
-      data: {
-        Applicants: allApplicants,
-      },
-    });
+    try {
+      const allApplicants = await Applicant.find()
+        .populate("contact")
+        .populate("prediction");
+
+      if (!allApplicants || allApplicants.length === 0) {
+        throw new BadUserRequestError("No applicants found");
+      }
+
+      const applicantsData = allApplicants.map((applicant) => {
+        const {
+          _id,
+          contact: {
+            firstName,
+            lastName,
+            gender,
+            DOB,
+            address,
+            stateOfOrigin,
+            addressOfEmployer,
+            phoneNumber,
+            nextOfKinPhoneNumber,
+          } = {},
+          prediction: { isApproved, isRejected } = {},
+          applicationDate,
+          applicationID,
+        } = applicant;
+
+        const loanStatus = isApproved
+          ? "Approved"
+          : isRejected
+          ? "Rejected"
+          : "Pending";
+
+        return {
+          _id,
+          contact: {
+            firstName,
+            lastName,
+            gender,
+            DOB,
+            address,
+            stateOfOrigin,
+            addressOfEmployer,
+            phoneNumber,
+            nextOfKinPhoneNumber,
+          },
+          loanStatus,
+          applicationDate,
+          applicationID,
+        };
+      });
+
+      res.status(200).json({
+        message: "Applicants found",
+        status: "Success",
+        data: {
+          Applicants: applicantsData,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
   },
 };
 
