@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Applicant = require("./applicantContact.model");
 
 const newPredictionSchema = new mongoose.Schema({
   modelName: String,
