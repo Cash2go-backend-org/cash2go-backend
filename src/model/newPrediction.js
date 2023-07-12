@@ -1,22 +1,14 @@
 const mongoose = require("mongoose");
 
 const newPredictionSchema = new mongoose.Schema({
-  modelName: String,
-  modelDescription: String,
-  creditScore: {
-    operator: String,
-    value: Number,
-  },
-  annualIncome: {
-    operator: String,
-    value: Number,
-  },
-  guarantorsCreditScore: {
-    operator: String,
-    value: Number,
-  },
-  allConditions: Boolean,
-  anyCondition: Boolean,
+  creditScore: Number,
+  annualIncome: Number,
+  guarantorsCreditScore: Number,
+  loanRequestAmount: Number,
+  creditUtilization: String,
+  loanDuration: String,
+  previousLoanPerfomance: String,
+  lastLoanApplication: String,
   isApproved: Boolean,
   isRejected: Boolean,
 });

@@ -63,7 +63,15 @@ const applicantController = {
     }
 
     const { applicantId } = req.params;
-    const { creditScore, annualIncome, guarantorsCreditScore } = req.body;
+    const {
+      creditScore,
+      annualIncome,
+      guarantorsCreditScore,
+      creditUtilization,
+      loanDuration,
+      previousLoanPerfomance,
+      lastLoanApplication,
+    } = req.body;
 
     let eligible = true;
 
@@ -95,11 +103,25 @@ const applicantController = {
       if (eligible) {
         applicant.prediction.isApproved = true;
         applicant.prediction.isRejected = false;
+        applicant.prediction.creditScore = creditScore;
+        applicant.prediction.annualIncome = annualIncome;
+        applicant.prediction.guarantorsCreditScore = guarantorsCreditScore;
+        applicant.prediction.creditUtilization = creditUtilization;
+        applicant.prediction.loanDuration = loanDuration;
+        applicant.prediction.previousLoanPerfomance = previousLoanPerfomance;
+        applicant.prediction.lastLoanApplication = lastLoanApplication;
         await applicant.save();
         loanStatus = "Approved";
       } else {
         applicant.prediction.isApproved = false;
         applicant.prediction.isRejected = true;
+        applicant.prediction.creditScore = creditScore;
+        applicant.prediction.annualIncome = annualIncome;
+        applicant.prediction.guarantorsCreditScore = guarantorsCreditScore;
+        applicant.prediction.creditUtilization = creditUtilization;
+        applicant.prediction.loanDuration = loanDuration;
+        applicant.prediction.previousLoanPerfomance = previousLoanPerfomance;
+        applicant.prediction.lastLoanApplication = lastLoanApplication;
         await applicant.save();
         loanStatus = "Rejected";
       }
@@ -173,62 +195,62 @@ const applicantController = {
   getAllApplicants: async (req, res) => {
     try {
       const allApplicants = await Applicant.find()
-        .populate("contact")
-        .populate("prediction");
+        // .populate("contact")
+        // .populate("prediction");
 
       if (!allApplicants || allApplicants.length === 0) {
         throw new BadUserRequestError("No applicants found");
       }
 
-      const applicantsData = allApplicants.map((applicant) => {
-        const {
-          _id,
-          contact: {
-            firstName,
-            lastName,
-            gender,
-            DOB,
-            address,
-            stateOfOrigin,
-            addressOfEmployer,
-            phoneNumber,
-            nextOfKinPhoneNumber,
-          } = {},
-          prediction: { isApproved, isRejected } = {},
-          applicationDate,
-          applicationID,
-        } = applicant;
+      // const applicantsData = allApplicants.map((applicant) => {
+      //   const {
+      //     _id,
+      //     contact: {
+      //       firstName,
+      //       lastName,
+      //       gender,
+      //       DOB,
+      //       address,
+      //       stateOfOrigin,
+      //       addressOfEmployer,
+      //       phoneNumber,
+      //       nextOfKinPhoneNumber,
+      //     } = {},
+      //     prediction: { isApproved, isRejected } = {},
+      //     applicationDate,
+      //     applicationID,
+      //   } = applicant;
 
-        const loanStatus = isApproved
-          ? "Approved"
-          : isRejected
-          ? "Rejected"
-          : "Pending";
+      //   const loanStatus = isApproved
+      //     ? "Approved"
+      //     : isRejected
+      //     ? "Rejected"
+      //     : "Pending";
 
-        return {
-          _id,
-          contact: {
-            firstName,
-            lastName,
-            gender,
-            DOB,
-            address,
-            stateOfOrigin,
-            addressOfEmployer,
-            phoneNumber,
-            nextOfKinPhoneNumber,
-          },
-          loanStatus,
-          applicationDate,
-          applicationID,
-        };
-      });
+      //   return {
+      //     _id,
+      //     contact: {
+      //       firstName,
+      //       lastName,
+      //       gender,
+      //       DOB,
+      //       address,
+      //       stateOfOrigin,
+      //       addressOfEmployer,
+      //       phoneNumber,
+      //       nextOfKinPhoneNumber,
+      //     },
+      //     loanStatus,
+      //     applicationDate,
+      //     applicationID,
+      //   };
+      // });
 
       res.status(200).json({
         message: "Applicants found",
         status: "Success",
         data: {
-          Applicants: applicantsData,
+          Applicants: allApplicants,
         },
       });
     } catch (error) {
