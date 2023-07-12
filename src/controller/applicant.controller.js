@@ -61,10 +61,6 @@ const applicantController = {
     if (!model || model.length === 0) {
       throw new BadUserRequestError("No prediction models found");
     }
-    // const models = await Model.find();
-    // if (!models || models.length === 0) {
-    //   throw new BadUserRequestError("No prediction models found");
-    // }
 
     const { applicantId } = req.params;
     const {
@@ -79,37 +75,19 @@ const applicantController = {
 
     let eligible = true;
 
-     const {
-       creditScore: modelCreditScore,
-       annualIncome: modelAnnualIncome,
-       guarantorsCreditScore: modelGuarantorsCreditScore,
+    const {
+      creditScore: modelCreditScore,
+      annualIncome: modelAnnualIncome,
+      guarantorsCreditScore: modelGuarantorsCreditScore,
     } = model;
-    
-     if (
-        creditScore < modelCreditScore.value ||
-        annualIncome < modelAnnualIncome.value ||
-        guarantorsCreditScore < modelGuarantorsCreditScore.value
-      ) {
-        eligible = false;
-      }
 
-
-    // for (const model of models) {
-    //   const {
-    //     creditScore: modelCreditScore,
-    //     annualIncome: modelAnnualIncome,
-    //     guarantorsCreditScore: modelGuarantorsCreditScore,
-    //   } = model;
-
-    //   if (
-    //     creditScore.value < modelCreditScore.value ||
-    //     annualIncome.value < modelAnnualIncome.value ||
-    //     guarantorsCreditScore.value < modelGuarantorsCreditScore.value
-    //   ) {
-    //     eligible = false;
-    //     break;
-    //   }
-    // }
+    if (
+      creditScore < modelCreditScore.value ||
+      annualIncome < modelAnnualIncome.value ||
+      guarantorsCreditScore < modelGuarantorsCreditScore.value
+    ) {
+      eligible = false;
+    }
 
     try {
       const applicant = await Applicant.findById(applicantId);
@@ -214,57 +192,10 @@ const applicantController = {
   getAllApplicants: async (req, res) => {
     try {
       const allApplicants = await Applicant.find();
-      // .populate("contact")
-      // .populate("prediction");
 
       if (!allApplicants || allApplicants.length === 0) {
         throw new BadUserRequestError("No applicants found");
       }
-
-      // const applicantsData = allApplicants.map((applicant) => {
-      //   const {
-      //     _id,
-      //     contact: {
-      //       firstName,
-      //       lastName,
-      //       gender,
-      //       DOB,
-      //       address,
-      //       stateOfOrigin,
-      //       addressOfEmployer,
-      //       phoneNumber,
-      //       nextOfKinPhoneNumber,
-      //     } = {},
-      //     prediction: { isApproved, isRejected } = {},
-      //     applicationDate,
-      //     applicationID,
-      //   } = applicant;
-
-      //   const loanStatus = isApproved
-      //     ? "Approved"
-      //     : isRejected
-      //     ? "Rejected"
-      //     : "Pending";
-
-      //   return {
-      //     _id,
-      //     contact: {
-      //       firstName,
-      //       lastName,
-      //       gender,
-      //       DOB,
-      //       address,
-      //       stateOfOrigin,
-      //       addressOfEmployer,
-      //       phoneNumber,
-      //       nextOfKinPhoneNumber,
-      //     },
-      //     loanStatus,
-      //     applicationDate,
-      //     applicationID,
-      //   };
-      // });
-
       res.status(200).json({
         message: "Applicants found",
         status: "Success",
