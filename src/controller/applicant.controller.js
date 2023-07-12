@@ -57,10 +57,14 @@ const applicantController = {
     const { error } = newPredictionValidator.validate(req.body);
     if (error) throw error;
 
-    const models = await Model.find();
-    if (!models || models.length === 0) {
+    const model = await Model.findOne({ isSelected: true });
+    if (!model || model.length === 0) {
       throw new BadUserRequestError("No prediction models found");
     }
+    // const models = await Model.find();
+    // if (!models || models.length === 0) {
+    //   throw new BadUserRequestError("No prediction models found");
+    // }
 
     const { applicantId } = req.params;
     const {
@@ -75,22 +79,37 @@ const applicantController = {
 
     let eligible = true;
 
-    for (const model of models) {
-      const {
-        creditScore: modelCreditScore,
-        annualIncome: modelAnnualIncome,
-        guarantorsCreditScore: modelGuarantorsCreditScore,
-      } = model;
-
-      if (
-        creditScore.value < modelCreditScore.value ||
-        annualIncome.value < modelAnnualIncome.value ||
-        guarantorsCreditScore.value < modelGuarantorsCreditScore.value
+     const {
+       creditScore: modelCreditScore,
+       annualIncome: modelAnnualIncome,
+       guarantorsCreditScore: modelGuarantorsCreditScore,
+    } = model;
+    
+     if (
+        creditScore < modelCreditScore.value ||
+        annualIncome < modelAnnualIncome.value ||
+        guarantorsCreditScore < modelGuarantorsCreditScore.value
       ) {
         eligible = false;
-        break;
       }
-    }
+
+
+    // for (const model of models) {
+    //   const {
+    //     creditScore: modelCreditScore,
+    //     annualIncome: modelAnnualIncome,
+    //     guarantorsCreditScore: modelGuarantorsCreditScore,
+    //   } = model;
+
+    //   if (
+    //     creditScore.value < modelCreditScore.value ||
+    //     annualIncome.value < modelAnnualIncome.value ||
+    //     guarantorsCreditScore.value < modelGuarantorsCreditScore.value
+    //   ) {
+    //     eligible = false;
+    //     break;
+    //   }
+    // }
 
     try {
       const applicant = await Applicant.findById(applicantId);
@@ -194,9 +213,9 @@ const applicantController = {
 
   getAllApplicants: async (req, res) => {
     try {
-      const allApplicants = await Applicant.find()
-        // .populate("contact")
-        // .populate("prediction");
+      const allApplicants = await Applicant.find();
+      // .populate("contact")
+      // .populate("prediction");
 
       if (!allApplicants || allApplicants.length === 0) {
         throw new BadUserRequestError("No applicants found");

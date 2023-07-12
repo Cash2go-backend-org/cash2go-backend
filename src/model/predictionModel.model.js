@@ -15,6 +15,7 @@ const ModelSchema = new mongoose.Schema({
     operator: String,
     value: Number,
   },
+  isSelected: Boolean,
   allConditions: Boolean,
   anyCondition: Boolean,
 });
