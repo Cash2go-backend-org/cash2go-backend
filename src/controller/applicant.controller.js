@@ -64,6 +64,7 @@ const applicantController = {
 
     const { applicantId } = req.params;
     const {
+      loanRequestAmount,
       creditScore,
       annualIncome,
       guarantorsCreditScore,
@@ -100,6 +101,7 @@ const applicantController = {
       if (eligible) {
         applicant.prediction.isApproved = true;
         applicant.prediction.isRejected = false;
+        applicant.prediction.loanRequestAmount = loanRequestAmount;
         applicant.prediction.creditScore = creditScore;
         applicant.prediction.annualIncome = annualIncome;
         applicant.prediction.guarantorsCreditScore = guarantorsCreditScore;
@@ -112,6 +114,7 @@ const applicantController = {
       } else {
         applicant.prediction.isApproved = false;
         applicant.prediction.isRejected = true;
+        applicant.prediction.loanRequestAmount = loanRequestAmount;
         applicant.prediction.creditScore = creditScore;
         applicant.prediction.annualIncome = annualIncome;
         applicant.prediction.guarantorsCreditScore = guarantorsCreditScore;
