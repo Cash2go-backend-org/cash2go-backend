@@ -14,14 +14,14 @@ const contactValidator = Joi.object({
 }).required();
 
 const newPredictionValidator = Joi.object({
-  creditScore: Joi.number(),
-  annualIncome: Joi.number(),
-  guarantorsCreditScore: Joi.number(),
-  loanRequestAmount: Joi.number(),
-  creditUtilization: Joi.string(),
-  loanDuration: Joi.string(),
-  previousLoanPerfomance: Joi.string(),
-  lastLoanApplication: Joi.string(),
+  creditScore: Joi.number().required(),
+  annualIncome: Joi.number().required(),
+  guarantorsCreditScore: Joi.number().required(),
+  loanRequestAmount: Joi.number().required(),
+  creditUtilization: Joi.string().required(),
+  loanDuration: Joi.string().required(),
+  previousLoanPerfomance: Joi.string().required(),
+  lastLoanApplication: Joi.string().required(),
   isApproved: Joi.boolean(),
   isRejected: Joi.boolean(),
 });
