@@ -20,7 +20,7 @@ mongoose
 const port = config.PORT;
 const app = express();
 
-// Middleware
+// Middlewaress
 // app.use(useragent.express());
 app.use(morgan("tiny"));
 app.use(express.json());
