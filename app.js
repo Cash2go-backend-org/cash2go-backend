@@ -10,7 +10,7 @@ const config = require("./src/config/index");
 const checkInternetConnection = require("./src/error/checkInternetConnection");
 require("dotenv").config();
 // const useragent = require("express-useragent");
-// Database connectionnnnnnnnnnnnn
+// Database connectionnnnnnnnnnnn
 const mongoURI = config.MONGODB_CONNECTION_URL;
 
 mongoose
